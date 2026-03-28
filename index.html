@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RAB — Vasaka Bali EVARA | PT. Vasaka Bali Premiere Constructor</title>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="site-header">
+  <div class="header-inner">
+    <div class="brand">
+      <div class="brand-name">PT. Vasaka Bali Premiere Constructor</div>
+      <div class="brand-sub">Jl. Marina Raya No. 88, Denpasar, Bali</div>
+    </div>
+    <div class="doc-badge">
+      <div>Tanggal <strong>28 Maret 2026</strong></div>
+      <div>Masa berlaku <strong>30 Hari Kalender</strong></div>
+    </div>
+  </div>
+</header>
+
+<!-- TAB NAV -->
+<nav class="tab-nav">
+  <div class="tab-nav-inner">
+    <button class="tab-btn active" onclick="switchTab('selatan')">EVARA Selatan</button>
+    <button class="tab-btn" onclick="switchTab('utara')">EVARA Utara</button>
+    <button class="tab-btn" onclick="switchTab('compare')">Perbandingan</button>
+  </div>
+</nav>
+
+<main class="main">
+
+  <!-- ══════════════════════════════════════
+       EVARA SELATAN
+  ══════════════════════════════════════ -->
+  <div id="tab-selatan" class="tab-panel active">
+
+    <button class="print-btn" onclick="window.print()">⎙ &nbsp;Cetak / Simpan PDF</button>
+
+    <!-- Project Info -->
+    <div class="project-card">
+      <div class="project-info-group">
+        <div class="info-label">Nama Proyek</div>
+        <div class="info-value"><strong>Vasaka Bali EVARA SELATAN</strong>3 Kamar Tidur · 3 Kamar Mandi</div>
+      </div>
+      <div class="project-info-group">
+        <div class="info-label">Luas Area</div>
+        <div class="info-value"><strong>125,58 m²</strong>Lt.1 : 64,48 m² &nbsp;·&nbsp; Lt.2 : 61,10 m²</div>
+      </div>
+      <div class="project-info-group">
+        <div class="info-label">Dokumen &amp; Waktu Pelaksanaan</div>
+        <div class="info-value">VBC/RAB/2026-03/EVARA-001 Rev.1<br>210 Hari Kalender (±7 Bulan)</div>
+      </div>
+    </div>
+
+    <!-- Summary -->
+    <div class="summary-block">
+      <div class="section-title"><span class="code-tag">RINGKASAN</span> Rekapitulasi Biaya</div>
+      <table class="summary-table">
+        <thead>
+          <tr>
+            <th style="width:48px">Kode</th>
+            <th>Uraian Pekerjaan</th>
+            <th style="width:200px">Total Harga</th>
+            <th style="width:120px" class="right">Bobot</th>
+          </tr>
+        </thead>
+        <tbody id="summary-selatan"></tbody>
+      </table>
+    </div>
+
+    <!-- BOQ Sections -->
+    <div class="section-title"><span class="code-tag">BOQ</span> Rincian Bill of Quantities</div>
+    <div id="boq-selatan"></div>
+
+    <!-- Exclusions -->
+    <div class="exclusions-card">
+      <div class="exclusions-title">⚠ Tidak Termasuk dalam RAB</div>
+      <ul class="exclusions-list">
+        <li>Pengurusan IMB / PBG dan retribusi daerah</li>
+        <li>Pekerjaan pagar keliling kavling, pagar depan, dan gerbang</li>
+        <li>Pekerjaan Landscape / Taman (rumput, tanaman, kolam, gazebo)</li>
+        <li>Furnitur loose dan built-in cabinet</li>
+        <li>Pengadaan Genset dan instalasi jaringan CCTV</li>
+        <li>Instalasi internet (Fiber Optic ISP) dan jaringan telepon</li>
+        <li>Biaya relokasi utilitas existing</li>
+        <li>Biaya sambungan baru PLN (> 3500 VA) dan PDAM</li>
+        <li>Kenaikan harga material di luar periode validitas penawaran</li>
+      </ul>
+      <div class="validity-strip">
+        <div class="validity-item">Masa Berlaku Penawaran: <strong>30 Hari Kalender</strong></div>
+        <div class="validity-item">Masa Pemeliharaan: <strong>90 Hari Kalender</strong> setelah PHO</div>
+      </div>
+    </div>
+
+    <!-- Signature -->
+    <div class="signature-strip">
+      <div class="sig-cell">
+        <div class="sig-label">Dibuat Oleh</div>
+        <div class="sig-name">Ir. Made Alex W.</div>
+        <div class="sig-role">Estimator VBC</div>
+      </div>
+      <div class="sig-cell">
+        <div class="sig-label">Diperiksa Oleh</div>
+        <div class="sig-name">Kepala Estimator</div>
+        <div class="sig-role">PT. Vasaka Bali Constructor</div>
+      </div>
+      <div class="sig-cell">
+        <div class="sig-label">Disetujui Oleh</div>
+        <div class="sig-name">Bapak / Ibu [Nama Klien]</div>
+        <div class="sig-role">Pemilik Proyek</div>
+      </div>
+    </div>
+
+  </div><!-- /selatan -->
+
+
+  <!-- ══════════════════════════════════════
+       EVARA UTARA
+  ══════════════════════════════════════ -->
+  <div id="tab-utara" class="tab-panel">
+
+    <button class="print-btn" onclick="window.print()">⎙ &nbsp;Cetak / Simpan PDF</button>
+
+    <div class="project-card">
+      <div class="project-info-group">
+        <div class="info-label">Nama Proyek</div>
+        <div class="info-value"><strong>Vasaka Bali EVARA UTARA</strong>2 Kamar Tidur · 3 Kamar Mandi</div>
+      </div>
+      <div class="project-info-group">
+        <div class="info-label">Luas Area</div>
+        <div class="info-value"><strong>111,87 m²</strong>Lt.1 : 53,95 m² &nbsp;·&nbsp; Lt.2 : 57,92 m²</div>
+      </div>
+      <div class="project-info-group">
+        <div class="info-label">Dokumen &amp; Waktu Pelaksanaan</div>
+        <div class="info-value">VBC/RAB/2026-03/EVARA-002 Rev.1<br>210 Hari Kalender (±7 Bulan)</div>
+      </div>
+    </div>
+
+    <div class="summary-block">
+      <div class="section-title"><span class="code-tag">RINGKASAN</span> Rekapitulasi Biaya</div>
+      <table class="summary-table">
+        <thead>
+          <tr>
+            <th style="width:48px">Kode</th>
+            <th>Uraian Pekerjaan</th>
+            <th style="width:200px">Total Harga</th>
+            <th style="width:120px" class="right">Bobot</th>
+          </tr>
+        </thead>
+        <tbody id="summary-utara"></tbody>
+      </table>
+    </div>
+
+    <div class="section-title"><span class="code-tag">BOQ</span> Rincian Bill of Quantities</div>
+    <div id="boq-utara"></div>
+
+    <div class="exclusions-card">
+      <div class="exclusions-title">⚠ Tidak Termasuk dalam RAB</div>
+      <ul class="exclusions-list">
+        <li>Pengurusan IMB / PBG dan retribusi daerah</li>
+        <li>Pekerjaan pagar keliling kavling, pagar depan, dan gerbang</li>
+        <li>Pekerjaan Landscape / Taman (rumput, tanaman, kolam, gazebo)</li>
+        <li>Furnitur loose dan built-in cabinet</li>
+        <li>Pengadaan Genset dan instalasi jaringan CCTV</li>
+        <li>Instalasi internet (Fiber Optic ISP) dan jaringan telepon</li>
+        <li>Biaya relokasi utilitas existing</li>
+        <li>Biaya sambungan baru PLN (> 3500 VA) dan PDAM</li>
+        <li>Kenaikan harga material di luar periode validitas penawaran</li>
+      </ul>
+      <div class="validity-strip">
+        <div class="validity-item">Masa Berlaku Penawaran: <strong>30 Hari Kalender</strong></div>
+        <div class="validity-item">Masa Pemeliharaan: <strong>90 Hari Kalender</strong> setelah PHO</div>
+      </div>
+    </div>
+
+    <div class="signature-strip">
+      <div class="sig-cell">
+        <div class="sig-label">Dibuat Oleh</div>
+        <div class="sig-name">Ir. Made Alex W.</div>
+        <div class="sig-role">Estimator VBC</div>
+      </div>
+      <div class="sig-cell">
+        <div class="sig-label">Diperiksa Oleh</div>
+        <div class="sig-name">Kepala Estimator</div>
+        <div class="sig-role">PT. Vasaka Bali Constructor</div>
+      </div>
+      <div class="sig-cell">
+        <div class="sig-label">Disetujui Oleh</div>
+        <div class="sig-name">Bapak / Ibu [Nama Klien]</div>
+        <div class="sig-role">Pemilik Proyek</div>
+      </div>
+    </div>
+
+  </div><!-- /utara -->
+
+
+  <!-- ══════════════════════════════════════
+       PERBANDINGAN
+  ══════════════════════════════════════ -->
+  <div id="tab-compare" class="tab-panel">
+
+    <div class="compare-grid">
+      <div class="compare-card">
+        <div class="compare-card-title">EVARA SELATAN</div>
+        <div class="compare-card-sub">VBC/RAB/2026-03/EVARA-001 Rev.1</div>
+        <div class="compare-stat"><span class="compare-stat-label">Luas Area</span><span class="compare-stat-value">125,58 m²</span></div>
+        <div class="compare-stat"><span class="compare-stat-label">Kamar Tidur</span><span class="compare-stat-value">3 Kamar</span></div>
+        <div class="compare-stat"><span class="compare-stat-label">Total Konstruksi</span><span class="compare-stat-value">Rp 1.349.275.000</span></div>
+        <div class="compare-stat"><span class="compare-stat-label">PPN 11%</span><span class="compare-stat-value">Rp 148.420.250</span></div>
+        <div class="compare-stat"><span class="compare-stat-label">Grand Total</span><span class="compare-stat-value big">Rp 1.497.695.250</span></div>
+        <div class="compare-stat"><span class="compare-stat-label">Biaya per m²</span><span class="compare-stat-value">Rp 11.930.000 / m²</span></div>
+      </div>
+      <div class="compare-card">
+        <div class="compare-card-title">EVARA UTARA</div>
+        <div class="compare-card-sub">VBC/RAB/2026-03/EVARA-002 Rev.1</div>
+        <div class="compare-stat"><span class="compare-stat-label">Luas Area</span><span class="compare-stat-value">111,87 m²</span></div>
+        <div class="compare-stat"><span class="compare-stat-label">Kamar Tidur</span><span class="compare-stat-value">2 Kamar</span></div>
+        <div class="compare-stat"><span class="compare-stat-label">Total Konstruksi</span><span class="compare-stat-value">Rp 1.219.710.000</span></div>
+        <div class="compare-stat"><span class="compare-stat-label">PPN 11%</span><span class="compare-stat-value">Rp 134.168.100</span></div>
+        <div class="compare-stat"><span class="compare-stat-label">Grand Total</span><span class="compare-stat-value big">Rp 1.353.878.100</span></div>
+        <div class="compare-stat"><span class="compare-stat-label">Biaya per m²</span><span class="compare-stat-value">Rp 12.103.000 / m²</span></div>
+      </div>
+    </div>
+
+    <div class="section-title"><span class="code-tag">DETAIL</span> Perbandingan Per Divisi Pekerjaan</div>
+    <table class="compare-full-table">
+      <thead>
+        <tr>
+          <th style="width:44px">Kode</th>
+          <th>Uraian Pekerjaan</th>
+          <th style="width:180px">EVARA SELATAN</th>
+          <th style="width:180px">EVARA UTARA</th>
+          <th style="width:120px">Selisih</th>
+        </tr>
+      </thead>
+      <tbody id="compare-table"></tbody>
+    </table>
+
+  </div><!-- /compare -->
+
+</main>
+
+<script src="script.js"></script>
+</body>
+</html>
