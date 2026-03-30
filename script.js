@@ -1,294 +1,469 @@
-// ─── DATA ───
-const rp = v => 'Rp ' + v.toLocaleString('id-ID');
+// ═══════ RAB ENGINE — Format BOQ PT Rusira Ekatwa Zafar ═══════
+const rp=v=>'Rp '+Math.round(v).toLocaleString('id-ID');
+const PPN_RATE=0.11;
 
-const summaryData = {
-  selatan: [
-    { code:'A', name:'PEKERJAAN PERSIAPAN', total:43174209, weight:3.2 },
-    { code:'B', name:'PEKERJAAN TANAH DAN PONDASI', total:127212321, weight:9.4 },
-    { code:'C', name:'PEKERJAAN STRUKTUR ATAS', total:289846693, weight:21.5 },
-    { code:'D', name:'PEKERJAAN PASANGAN DAN PLESTERAN', total:200021312, weight:14.8 },
-    { code:'E', name:'PEKERJAAN KUSEN, PINTU, & JENDELA', total:171921622, weight:12.7 },
-    { code:'F', name:'PEKERJAAN ATAP DAN PLAFON', total:136307702, weight:10.1 },
-    { code:'G', name:'PEKERJAAN LANTAI DAN PELAPIS DINDING', total:147897561, weight:11.0 },
-    { code:'H', name:'PEKERJAAN PENGECATAN', total:65600241, weight:4.9 },
-    { code:'I', name:'PEKERJAAN SANITAIR & PLUMBING', total:73185081, weight:5.4 },
-    { code:'J', name:'PEKERJAAN ELEKTRIKAL & TATA UDARA', total:94108258, weight:7.0 },
-  ],
-  utara: [
-    { code:'A', name:'PEKERJAAN PERSIAPAN', total:43144587, weight:3.5 },
-    { code:'B', name:'PEKERJAAN TANAH DAN PONDASI', total:112425361, weight:9.2 },
-    { code:'C', name:'PEKERJAAN STRUKTUR ATAS', total:261899728, weight:21.6 },
-    { code:'D', name:'PEKERJAAN PASANGAN DAN PLESTERAN', total:183553522, weight:15.0 },
-    { code:'E', name:'PEKERJAAN KUSEN, PINTU, & JENDELA', total:153060008, weight:12.5 },
-    { code:'F', name:'PEKERJAAN ATAP DAN PLAFON', total:122067622, weight:10.0 },
-    { code:'G', name:'PEKERJAAN LANTAI DAN PELAPIS DINDING', total:130579612, weight:10.7 },
-    { code:'H', name:'PEKERJAAN PENGECATAN', total:60528704, weight:5.0 },
-    { code:'I', name:'PEKERJAAN SANITAIR & PLUMBING', total:74324054, weight:6.1 },
-    { code:'J', name:'PEKERJAAN ELEKTRIKAL & TATA UDARA', total:78626802, weight:6.4 },
-  ]
-};
-
-const boqData = {
-  selatan: [
-    { code:'A', name:'PEKERJAAN PERSIAPAN', subtotal:43174209, items:[
-        {no:1,uraian:'Pembersihan lahan awal & perataan',sat:'ls',vol:'1,00',hsat:'5.372.790',total:'5.372.790'},
-        {no:2,uraian:'Pengukuran & Pemasangan Bowplank',sat:'m1',vol:'55,00',hsat:'115.131',total:'6.332.205'},
-        {no:3,uraian:'Direksi Keet & Gudang Material',sat:'ls',vol:'1,00',hsat:'12.280.664',total:'12.280.664'},
-        {no:4,uraian:'Penyediaan Air & Listrik Kerja',sat:'ls',vol:'1,00',hsat:'7.675.415',total:'7.675.415'},
-        {no:5,uraian:'Asuransi CAR & BPJS TK',sat:'ls',vol:'1,00',hsat:'11.513.135',total:'11.513.135'},
-      ]},
-    { code:'B', name:'PEKERJAAN TANAH DAN PONDASI', subtotal:127212321, note:'Ref: Dokumen Struktur — Strauss Pile / Footplat', items:[
-        {no:1,uraian:'Galian tanah pondasi footplat & tie beam',sat:'m3',vol:'85,00',hsat:'130.482',total:'11.090.970'},
-        {no:2,uraian:'Pengeboran Strauss Pile ø30cm, kedalaman 6m',sat:'m1',vol:'144,00',hsat:'268.640',total:'38.684.160'},
-        {no:3,uraian:'Urugan pasir bawah pondasi & tie beam (t=5cm)',sat:'m3',vol:'6,50',hsat:'383.771',total:'2.494.512'},
-        {no:4,uraian:'Lantai kerja (Lean Concrete) bawah pondasi',sat:'m3',vol:'4,20',hsat:'1.304.821',total:'5.480.248'},
-        {no:5,uraian:'Pondasi Strauss Pile (Beton K-300, besi ulir)',sat:'m3',vol:'10,15',hsat:'3.837.707',total:'38.952.726'},
-        {no:6,uraian:'Pondasi Footplat (Beton K-300)',sat:'m3',vol:'14,50',hsat:'1.458.329',total:'21.145.771'},
-        {no:7,uraian:'Pembesian Footplat (Besi Ulir standar SNI)',sat:'kg',vol:'350,00',hsat:'21.491',total:'7.521.850'},
-        {no:8,uraian:'Bekisting Pondasi',sat:'m2',vol:'12,00',hsat:'153.507',total:'1.842.084'},
-      ]},
-    { code:'C', name:'PEKERJAAN STRUKTUR ATAS (BETON K-250/300)', subtotal:289846693, items:[
-        {no:1,uraian:'Tie Beam / Slog (Beton, Bekisting, Pembesian)',sat:'m3',vol:'6,80',hsat:'5.833.315',total:'39.666.542'},
-        {no:2,uraian:'Kolom Utama (Dim. 15×30 / 15×40)',sat:'m3',vol:'8,50',hsat:'6.447.349',total:'54.802.467'},
-        {no:3,uraian:'Kolom Praktis (15×15)',sat:'m1',vol:'180,00',hsat:'99.780',total:'17.960.400'},
-        {no:4,uraian:'Balok Lantai 2 (Dim. 20×40 / 15×30)',sat:'m3',vol:'9,50',hsat:'6.907.873',total:'65.624.794'},
-        {no:5,uraian:'Plat Lantai 2 (t=12cm, inc. multiplek & scaffolding)',sat:'m2',vol:'61,10',hsat:'1.151.312',total:'70.345.163'},
-        {no:6,uraian:'Plat Atap Dak Beton (Area Terbatas)',sat:'m2',vol:'15,00',hsat:'1.228.066',total:'18.420.990'},
-        {no:7,uraian:'Ring Balok Keliling (Beton K-250)',sat:'m3',vol:'2,50',hsat:'5.833.315',total:'14.583.288'},
-        {no:8,uraian:'Tangga Beton Utama',sat:'unit',vol:'1,00',hsat:'8.443.049',total:'8.443.049'},
-      ]},
-    { code:'D', name:'PEKERJAAN PASANGAN DAN PLESTERAN', subtotal:200021312, items:[
-        {no:1,uraian:'Pasangan Batu Bata Ringan (Hebel 10cm atau setara)',sat:'m2',vol:'420,00',hsat:'168.859',total:'70.920.780'},
-        {no:2,uraian:'Plesteran Dinding (1:4, t=15mm)',sat:'m2',vol:'840,00',hsat:'84.430',total:'70.921.200'},
-        {no:3,uraian:'Acian Dinding Interior & Eksterior',sat:'m2',vol:'840,00',hsat:'46.052',total:'38.683.680'},
-        {no:4,uraian:'Tali Air Fasade & Sudutan',sat:'m1',vol:'150,00',hsat:'27.631',total:'4.144.650'},
-        {no:5,uraian:'Batu Alam Panel Utama (atau setara, t=3cm)',sat:'m2',vol:'12,00',hsat:'767.541',total:'9.210.492'},
-        {no:6,uraian:'Roster Beton Cetak (Fasad Top, 20×20cm)',sat:'m2',vol:'5,00',hsat:'460.525',total:'2.302.625'},
-        {no:7,uraian:'Ornamen Fasad GRC/Kayu (profil custom)',sat:'set',vol:'1,00',hsat:'3.837.885',total:'3.837.885'},
-      ]},
-    { code:'E', name:'PEKERJAAN KUSEN, PINTU, & JENDELA', subtotal:171921622, items:[
-        {no:1,uraian:'Kusen + Daun Pintu Utama (Solid Wood atau setara)',sat:'unit',vol:'1,00',hsat:'7.675.415',total:'7.675.415'},
-        {no:2,uraian:'Kusen + Daun Pintu Kamar (Hollow Wood atau setara)',sat:'unit',vol:'3,00',hsat:'4.912.266',total:'14.736.798'},
-        {no:3,uraian:'Kusen + Daun Pintu KM (Alumunium atau setara)',sat:'unit',vol:'3,00',hsat:'3.377.183',total:'10.131.549'},
-        {no:4,uraian:'Jendela Alumunium Powder Coat + Kaca 5mm',sat:'m2',vol:'35,00',hsat:'2.302.624',total:'80.591.840'},
-        {no:5,uraian:'Jendela Sliding Kaca Besar (Area Living)',sat:'set',vol:'2,00',hsat:'17.653.454',total:'35.306.908'},
-        {no:6,uraian:'Engsel Pintu Utama (Heavy Duty SS atau setara)',sat:'pcs',vol:'4,00',hsat:'276.315',total:'1.105.260'},
-        {no:7,uraian:'Smart Door Lock Utama (digital lock standar)',sat:'unit',vol:'1,00',hsat:'3.837.707',total:'3.837.707'},
-        {no:8,uraian:'Handle Kunci Kamar (Mortise Lock atau setara)',sat:'set',vol:'5,00',hsat:'690.787',total:'3.453.935'},
-        {no:9,uraian:'Engsel Pintu Kamar & KM (SS atau setara)',sat:'pcs',vol:'15,00',hsat:'84.430',total:'1.266.450'},
-        {no:10,uraian:'Aksesoris Jendela (Rambuncis, Friction Stay)',sat:'set',vol:'20,00',hsat:'690.788',total:'13.815.760'},
-      ]},
-    { code:'F', name:'PEKERJAAN ATAP DAN PLAFON', subtotal:136307702, items:[
-        {no:1,uraian:'Rangka Atap Baja Ringan (G550 atau setara)',sat:'m2',vol:'75,00',hsat:'283.990',total:'21.299.250'},
-        {no:2,uraian:'Penutup Atap Genteng Flat Beton (atau setara)',sat:'m2',vol:'75,00',hsat:'337.718',total:'25.328.850'},
-        {no:3,uraian:'Nok Atap',sat:'m1',vol:'18,00',hsat:'253.289',total:'4.559.202'},
-        {no:4,uraian:'Lisplank Fiber Semen 20cm',sat:'m1',vol:'35,00',hsat:'191.885',total:'6.715.975'},
-        {no:5,uraian:'Talang Air Zincalume (inc. downpipe)',sat:'m1',vol:'25,00',hsat:'199.561',total:'4.989.025'},
-        {no:6,uraian:'Plafon Gypsum 9mm + Rangka Hollow',sat:'m2',vol:'110,00',hsat:'245.613',total:'27.017.430'},
-        {no:7,uraian:'Plafon Water Resistance (Area Basah)',sat:'m2',vol:'25,00',hsat:'307.017',total:'7.675.425'},
-        {no:8,uraian:'Drop Ceiling Set & Shadow Line',sat:'m1',vol:'85,00',hsat:'130.482',total:'11.090.970'},
-        {no:9,uraian:'Waterproofing Dak Atap & Kanopi (atau setara)',sat:'m2',vol:'45,00',hsat:'614.035',total:'27.631.575'},
-      ]},
-    { code:'G', name:'PEKERJAAN LANTAI DAN PELAPIS DINDING', subtotal:147897561, items:[
-        {no:1,uraian:'Lantai Utama Granit Tile 60×60 (atau setara)',sat:'m2',vol:'95,00',hsat:'583.332',total:'55.416.540'},
-        {no:2,uraian:'Keramik Lantai KM (Anti Slip, atau setara)',sat:'m2',vol:'18,00',hsat:'414.472',total:'7.460.496'},
-        {no:3,uraian:'Keramik Dinding KM (Full Height, atau setara)',sat:'m2',vol:'55,00',hsat:'460.525',total:'25.328.875'},
-        {no:4,uraian:'Plint Lantai (h=8cm)',sat:'m1',vol:'120,00',hsat:'92.105',total:'11.052.600'},
-        {no:5,uraian:'Batu Alam Fasad Eksterior (atau setara)',sat:'m2',vol:'35,00',hsat:'767.541',total:'26.863.935'},
-        {no:6,uraian:'Waterproofing Area Basah Lantai KM',sat:'m2',vol:'26,00',hsat:'168.859',total:'4.390.334'},
-        {no:7,uraian:'Lantai Teras / Carport (atau setara)',sat:'m2',vol:'45,30',hsat:'383.770',total:'17.384.781'},
-      ]},
-    { code:'H', name:'PEKERJAAN PENGECATAN', subtotal:65600241, items:[
-        {no:1,uraian:'Cat Dinding Interior (premium atau setara, 3 lapis)',sat:'m2',vol:'450,00',hsat:'58.333',total:'26.249.850'},
-        {no:2,uraian:'Cat Dinding Eksterior (weather protect atau setara)',sat:'m2',vol:'260,00',hsat:'84.430',total:'21.951.800'},
-        {no:3,uraian:'Cat Plafon Gypsum (standar, 2 lapis)',sat:'m2',vol:'135,00',hsat:'49.123',total:'6.631.605'},
-        {no:4,uraian:'Coating Batu Alam Exterior',sat:'m2',vol:'35,00',hsat:'214.912',total:'7.521.920'},
-        {no:5,uraian:'Coating Ornamen Kayu Fasad',sat:'m2',vol:'15,10',hsat:'214.905',total:'3.245.066'},
-      ]},
-    { code:'I', name:'PEKERJAAN SANITAIR & PLUMBING', subtotal:73185081, note:'Ref: Dokumen MEP Evara Selatan', items:[
-        {no:1,uraian:'Pipa Air Bersih PPR PN-10 (atau setara)',sat:'btg',vol:'35,00',hsat:'145.833',total:'5.104.155'},
-        {no:2,uraian:'Pipa Air Kotor PVC AW (atau setara)',sat:'btg',vol:'25,00',hsat:'184.210',total:'4.605.250'},
-        {no:3,uraian:'Fitting & Aksesoris Pipa',sat:'lot',vol:'1,00',hsat:'2.302.624',total:'2.302.624'},
-        {no:4,uraian:'Bak Kontrol & Pipa Hujan PVC',sat:'ttk',vol:'4,00',hsat:'614.033',total:'2.456.132'},
-        {no:5,uraian:'Closet Duduk Keramik (atau setara)',sat:'unit',vol:'3,00',hsat:'3.837.707',total:'11.513.121'},
-        {no:6,uraian:'Shower Set (atau setara)',sat:'unit',vol:'2,00',hsat:'5.372.790',total:'10.745.580'},
-        {no:7,uraian:'Wastafel + Kran Mixer + Cermin',sat:'set',vol:'3,00',hsat:'4.298.232',total:'12.894.696'},
-        {no:8,uraian:'Floor Drain SS + Toilet Jet Shower',sat:'set',vol:'3,00',hsat:'1.151.312',total:'3.453.936'},
-        {no:9,uraian:'Roof Tank Air 1000L (atau setara)',sat:'unit',vol:'1,00',hsat:'4.298.232',total:'4.298.232'},
-        {no:10,uraian:'Pompa Dorong Booster (atau setara)',sat:'unit',vol:'1,00',hsat:'4.298.232',total:'4.298.232'},
-        {no:11,uraian:'Instalasi Pipa AC & Drain AC',sat:'ttk',vol:'5,00',hsat:'1.228.066',total:'6.140.330'},
-        {no:12,uraian:'Septic Tank Biofilter + Sumur Resapan',sat:'unit',vol:'1,00',hsat:'5.372.793',total:'5.372.793'},
-      ]},
-    { code:'J', name:'PEKERJAAN ELEKTRIKAL & TATA UDARA', subtotal:94108258, note:'Ref: Dokumen MEP Evara Selatan', items:[
-        {no:1,uraian:'Kabel NYM 3×2.5mm (standar SNI atau setara)',sat:'roll',vol:'4,00',hsat:'1.842.100',total:'7.368.400'},
-        {no:2,uraian:'Kabel NYM 2×1.5mm (standar SNI atau setara)',sat:'roll',vol:'3,00',hsat:'1.228.066',total:'3.684.198'},
-        {no:3,uraian:'Pipa Conduit PVC 20mm (atau setara)',sat:'btg',vol:'60,00',hsat:'27.631',total:'1.657.860'},
-        {no:4,uraian:'T-Doos / In-Doos',sat:'pcs',vol:'60,00',hsat:'7.675',total:'460.500'},
-        {no:5,uraian:'Panel Utama (MCB Box 12 Way, atau setara)',sat:'set',vol:'1,00',hsat:'4.912.266',total:'4.912.266'},
-        {no:6,uraian:'Titik Lampu Dalam (Downlight LED atau setara)',sat:'ttk',vol:'45,00',hsat:'337.718',total:'15.197.310'},
-        {no:7,uraian:'Titik Lampu Luar (Spotlight IP65 atau setara)',sat:'ttk',vol:'15,00',hsat:'583.332',total:'8.749.980'},
-        {no:8,uraian:'Saklar & Stop Kontak (atau setara)',sat:'ttk',vol:'55,00',hsat:'253.289',total:'13.930.895'},
-        {no:9,uraian:'Lampu Strip LED (Indirect Ceiling)',sat:'m1',vol:'40,00',hsat:'184.210',total:'7.368.400'},
-        {no:10,uraian:'Titik Kabel Data / LAN (CAT6 atau setara)',sat:'ttk',vol:'4,00',hsat:'767.541',total:'3.070.164'},
-        {no:11,uraian:'Titik Antena TV + Kabel Coaxial',sat:'ttk',vol:'3,00',hsat:'537.279',total:'1.611.837'},
-        {no:12,uraian:'Pemasangan Titik Arde / Grounding (< 2 ohm)',sat:'unit',vol:'1,00',hsat:'4.298.232',total:'4.298.232'},
-        {no:13,uraian:'Unit AC Split 1 PK Inverter (atau setara)',sat:'unit',vol:'1,00',hsat:'6.447.349',total:'6.447.349'},
-        {no:14,uraian:'Unit AC Split 1/2 PK Inverter (atau setara)',sat:'unit',vol:'2,00',hsat:'5.372.790',total:'10.745.580'},
-        {no:15,uraian:'Pipa Freon, Kabel, Braket, Pipa Drain AC',sat:'ttk',vol:'3,00',hsat:'1.535.096',total:'4.605.287'},
-      ]},
-  ],
-  utara: [
-    { code:'A', name:'PEKERJAAN PERSIAPAN', subtotal:43144587, items:[
-        {no:1,uraian:'Pembersihan lahan awal & perataan',sat:'ls',vol:'1,00',hsat:'5.456.407',total:'5.456.407'},
-        {no:2,uraian:'Pengukuran & Pemasangan Bowplank',sat:'m1',vol:'49,00',hsat:'116.923',total:'5.729.227'},
-        {no:3,uraian:'Direksi Keet & Gudang Material',sat:'ls',vol:'1,00',hsat:'12.471.787',total:'12.471.787'},
-        {no:4,uraian:'Penyediaan Air & Listrik Kerja',sat:'ls',vol:'1,00',hsat:'7.794.867',total:'7.794.867'},
-        {no:5,uraian:'Asuransi CAR & BPJS TK',sat:'ls',vol:'1,00',hsat:'11.692.299',total:'11.692.299'},
-      ]},
-    { code:'B', name:'PEKERJAAN TANAH DAN PONDASI', subtotal:112425361, note:'Ref: Dokumen Struktur — Strauss Pile / Footplat', items:[
-        {no:1,uraian:'Galian tanah pondasi footplat & tie beam',sat:'m3',vol:'75,00',hsat:'132.513',total:'9.938.475'},
-        {no:2,uraian:'Pengeboran Strauss Pile ø30cm, kedalaman 6m',sat:'m1',vol:'120,00',hsat:'272.820',total:'32.738.400'},
-        {no:3,uraian:'Urugan pasir bawah pondasi & tie beam (t=5cm)',sat:'m3',vol:'5,80',hsat:'389.743',total:'2.260.509'},
-        {no:4,uraian:'Lantai kerja (Lean Concrete) bawah pondasi',sat:'m3',vol:'3,50',hsat:'1.325.127',total:'4.637.945'},
-        {no:5,uraian:'Pondasi Strauss Pile (Beton K-300, besi ulir)',sat:'m3',vol:'9,20',hsat:'3.897.433',total:'35.856.384'},
-        {no:6,uraian:'Pondasi Footplat (Beton K-300)',sat:'m3',vol:'13,00',hsat:'1.481.025',total:'19.253.325'},
-        {no:7,uraian:'Pembesian Footplat (Besi Ulir standar SNI)',sat:'kg',vol:'310,00',hsat:'21.826',total:'6.766.060'},
-        {no:8,uraian:'Bekisting Pondasi',sat:'m2',vol:'6,25',hsat:'155.882',total:'974.263'},
-      ]},
-    { code:'C', name:'PEKERJAAN STRUKTUR ATAS (BETON K-250/300)', subtotal:261899728, items:[
-        {no:1,uraian:'Tie Beam / Slog (Beton, Bekisting, Pembesian)',sat:'m3',vol:'6,10',hsat:'5.924.099',total:'36.137.004'},
-        {no:2,uraian:'Kolom Utama (Dim. 15×30 / 15×40)',sat:'m3',vol:'7,60',hsat:'6.547.688',total:'49.762.429'},
-        {no:3,uraian:'Kolom Praktis (15×15)',sat:'m1',vol:'160,00',hsat:'101.333',total:'16.213.280'},
-        {no:4,uraian:'Balok Lantai 2 (Dim. 20×40 / 15×30)',sat:'m3',vol:'8,50',hsat:'7.015.380',total:'59.630.730'},
-        {no:5,uraian:'Plat Lantai 2 (t=12cm, inc. multiplek & scaffolding)',sat:'m2',vol:'57,90',hsat:'1.169.230',total:'67.698.417'},
-        {no:6,uraian:'Plat Atap Dak Beton (Area Terbatas)',sat:'m2',vol:'11,20',hsat:'1.247.179',total:'13.968.405'},
-        {no:7,uraian:'Ring Balok Keliling (Beton K-250)',sat:'m3',vol:'2,20',hsat:'5.924.099',total:'13.033.018'},
-        {no:8,uraian:'Tangga Beton Utama',sat:'unit',vol:'1,00',hsat:'5.456.445',total:'5.456.445'},
-      ]},
-    { code:'D', name:'PEKERJAAN PASANGAN DAN PLESTERAN', subtotal:183553522, items:[
-        {no:1,uraian:'Pasangan Batu Bata Ringan (Hebel 10cm atau setara)',sat:'m2',vol:'380,00',hsat:'171.487',total:'65.165.060'},
-        {no:2,uraian:'Plesteran Dinding (1:4, t=15mm)',sat:'m2',vol:'760,00',hsat:'85.744',total:'65.165.440'},
-        {no:3,uraian:'Acian Dinding Interior & Eksterior',sat:'m2',vol:'760,00',hsat:'46.769',total:'35.544.440'},
-        {no:4,uraian:'Tali Air Fasade & Sudutan',sat:'m1',vol:'130,00',hsat:'28.062',total:'3.648.060'},
-        {no:5,uraian:'Batu Alam Panel Utama (atau setara, t=3cm)',sat:'m2',vol:'10,00',hsat:'779.487',total:'7.794.870'},
-        {no:6,uraian:'Roster Beton Cetak (Fasad Top, 20×20cm)',sat:'m2',vol:'4,00',hsat:'467.692',total:'1.870.768'},
-        {no:7,uraian:'Ornamen Fasad GRC/Kayu (profil custom)',sat:'set',vol:'1,00',hsat:'4.364.884',total:'4.364.884'},
-      ]},
-    { code:'E', name:'PEKERJAAN KUSEN, PINTU, & JENDELA', subtotal:153060008, note:'Evara Utara: 2 kamar tidur, kuantitas kusen & handle lebih sedikit.', items:[
-        {no:1,uraian:'Kusen + Daun Pintu Utama (Solid Wood atau setara)',sat:'unit',vol:'1,00',hsat:'7.794.867',total:'7.794.867'},
-        {no:2,uraian:'Kusen + Daun Pintu Kamar (Hollow Wood atau setara)',sat:'unit',vol:'2,00',hsat:'4.988.715',total:'9.977.430'},
-        {no:3,uraian:'Kusen + Daun Pintu KM (Alumunium atau setara)',sat:'unit',vol:'2,00',hsat:'3.429.741',total:'6.859.482'},
-        {no:4,uraian:'Jendela Alumunium Powder Coat + Kaca 5mm',sat:'m2',vol:'31,00',hsat:'2.338.460',total:'72.492.260'},
-        {no:5,uraian:'Jendela Sliding Kaca Besar (Area Living)',sat:'set',vol:'2,00',hsat:'17.928.194',total:'35.856.388'},
-        {no:6,uraian:'Engsel Pintu Utama (Heavy Duty SS atau setara)',sat:'pcs',vol:'4,00',hsat:'280.615',total:'1.122.460'},
-        {no:7,uraian:'Smart Door Lock Utama (digital lock standar)',sat:'unit',vol:'1,00',hsat:'3.897.433',total:'3.897.433'},
-        {no:8,uraian:'Handle Kunci Kamar (Mortise Lock atau setara)',sat:'set',vol:'4,00',hsat:'701.538',total:'2.806.152'},
-        {no:9,uraian:'Engsel Pintu Kamar & KM (SS atau setara)',sat:'pcs',vol:'12,00',hsat:'85.744',total:'1.028.928'},
-        {no:10,uraian:'Aksesoris Jendela (Rambuncis, Friction Stay)',sat:'set',vol:'16,00',hsat:'701.538',total:'11.224.608'},
-      ]},
-    { code:'F', name:'PEKERJAAN ATAP DAN PLAFON', subtotal:122067622, items:[
-        {no:1,uraian:'Rangka Atap Baja Ringan (G550 atau setara)',sat:'m2',vol:'68,00',hsat:'288.410',total:'19.611.880'},
-        {no:2,uraian:'Penutup Atap Genteng Flat Beton (atau setara)',sat:'m2',vol:'68,00',hsat:'342.974',total:'23.322.232'},
-        {no:3,uraian:'Nok Atap',sat:'m1',vol:'15,00',hsat:'257.231',total:'3.858.465'},
-        {no:4,uraian:'Lisplank Fiber Semen 20cm',sat:'m1',vol:'30,00',hsat:'194.872',total:'5.846.160'},
-        {no:5,uraian:'Talang Air Zincalume (inc. downpipe)',sat:'m1',vol:'16,00',hsat:'202.667',total:'3.242.672'},
-        {no:6,uraian:'Plafon Gypsum 9mm + Rangka Hollow',sat:'m2',vol:'98,00',hsat:'249.436',total:'24.444.728'},
-        {no:7,uraian:'Plafon Water Resistance (Area Basah)',sat:'m2',vol:'22,00',hsat:'311.795',total:'6.859.490'},
-        {no:8,uraian:'Drop Ceiling Set & Shadow Line',sat:'m1',vol:'75,00',hsat:'132.513',total:'9.938.475'},
-        {no:9,uraian:'Waterproofing Dak Atap & Kanopi (atau setara)',sat:'m2',vol:'40,00',hsat:'623.588',total:'24.943.520'},
-      ]},
-    { code:'G', name:'PEKERJAAN LANTAI DAN PELAPIS DINDING', subtotal:130579612, items:[
-        {no:1,uraian:'Lantai Utama Granit Tile 60×60 (atau setara)',sat:'m2',vol:'85,00',hsat:'592.410',total:'50.354.850'},
-        {no:2,uraian:'Keramik Lantai KM (Anti Slip, atau setara)',sat:'m2',vol:'15,00',hsat:'420.923',total:'6.313.845'},
-        {no:3,uraian:'Keramik Dinding KM (Full Height, atau setara)',sat:'m2',vol:'45,00',hsat:'467.692',total:'21.046.140'},
-        {no:4,uraian:'Plint Lantai (h=8cm)',sat:'m1',vol:'110,00',hsat:'93.538',total:'10.289.180'},
-        {no:5,uraian:'Batu Alam Fasad Eksterior (atau setara)',sat:'m2',vol:'30,00',hsat:'779.487',total:'23.384.610'},
-        {no:6,uraian:'Waterproofing Area Basah Lantai KM',sat:'m2',vol:'21,00',hsat:'171.487',total:'3.601.227'},
-        {no:7,uraian:'Lantai Teras / Carport (atau setara)',sat:'m2',vol:'40,00',hsat:'389.744',total:'15.589.760'},
-      ]},
-    { code:'H', name:'PEKERJAAN PENGECATAN', subtotal:60528704, items:[
-        {no:1,uraian:'Cat Dinding Interior (premium atau setara, 3 lapis)',sat:'m2',vol:'410,00',hsat:'59.241',total:'24.288.810'},
-        {no:2,uraian:'Cat Dinding Eksterior (weather protect atau setara)',sat:'m2',vol:'230,00',hsat:'85.744',total:'19.721.120'},
-        {no:3,uraian:'Cat Plafon Gypsum (standar, 2 lapis)',sat:'m2',vol:'115,00',hsat:'49.887',total:'5.737.005'},
-        {no:4,uraian:'Coating Batu Alam Exterior',sat:'m2',vol:'30,00',hsat:'218.256',total:'6.547.680'},
-        {no:5,uraian:'Coating Ornamen Kayu Fasad',sat:'m2',vol:'19,40',hsat:'218.252',total:'4.234.089'},
-      ]},
-    { code:'I', name:'PEKERJAAN SANITAIR & PLUMBING', subtotal:74324054, note:'Gambar MEP menunjukkan 4 titik wet area meskipun 2 kamar tidur.', items:[
-        {no:1,uraian:'Pipa Air Bersih PPR PN-10 (atau setara)',sat:'btg',vol:'35,00',hsat:'148.102',total:'5.183.570'},
-        {no:2,uraian:'Pipa Air Kotor PVC AW (atau setara)',sat:'btg',vol:'25,00',hsat:'187.077',total:'4.676.925'},
-        {no:3,uraian:'Fitting & Aksesoris Pipa',sat:'lot',vol:'1,00',hsat:'2.338.460',total:'2.338.460'},
-        {no:4,uraian:'Bak Kontrol & Pipa Hujan PVC',sat:'ttk',vol:'4,00',hsat:'623.589',total:'2.494.356'},
-        {no:5,uraian:'Closet Duduk Keramik (atau setara)',sat:'unit',vol:'3,00',hsat:'3.897.433',total:'11.692.299'},
-        {no:6,uraian:'Shower Set (atau setara)',sat:'unit',vol:'2,00',hsat:'5.456.407',total:'10.912.814'},
-        {no:7,uraian:'Wastafel + Kran Mixer + Cermin',sat:'set',vol:'3,00',hsat:'4.365.125',total:'13.095.375'},
-        {no:8,uraian:'Floor Drain SS + Toilet Jet Shower',sat:'set',vol:'3,00',hsat:'1.169.230',total:'3.507.690'},
-        {no:9,uraian:'Roof Tank Air 1000L (atau setara)',sat:'unit',vol:'1,00',hsat:'4.365.125',total:'4.365.125'},
-        {no:10,uraian:'Pompa Dorong Booster (atau setara)',sat:'unit',vol:'1,00',hsat:'4.365.125',total:'4.365.125'},
-        {no:11,uraian:'Instalasi Pipa AC & Drain AC',sat:'ttk',vol:'5,00',hsat:'1.247.179',total:'6.235.895'},
-        {no:12,uraian:'Septic Tank Biofilter + Sumur Resapan',sat:'unit',vol:'1,00',hsat:'5.456.420',total:'5.456.420'},
-      ]},
-    { code:'J', name:'PEKERJAAN ELEKTRIKAL & TATA UDARA', subtotal:78626802, note:'Volume disesuaikan untuk 2 kamar tidur.', items:[
-        {no:1,uraian:'Kabel NYM 3×2.5mm (standar SNI atau setara)',sat:'roll',vol:'4,00',hsat:'1.870.768',total:'7.483.072'},
-        {no:2,uraian:'Kabel NYM 2×1.5mm (standar SNI atau setara)',sat:'roll',vol:'3,00',hsat:'1.247.179',total:'3.741.537'},
-        {no:3,uraian:'Pipa Conduit PVC 20mm (atau setara)',sat:'btg',vol:'50,00',hsat:'28.062',total:'1.403.100'},
-        {no:4,uraian:'T-Doos / In-Doos',sat:'pcs',vol:'50,00',hsat:'7.795',total:'389.750'},
-        {no:5,uraian:'Panel Utama (MCB Box 12 Way, atau setara)',sat:'set',vol:'1,00',hsat:'4.988.715',total:'4.988.715'},
-        {no:6,uraian:'Titik Lampu Dalam (Downlight LED atau setara)',sat:'ttk',vol:'38,00',hsat:'342.974',total:'13.033.012'},
-        {no:7,uraian:'Titik Lampu Luar (Spotlight IP65 atau setara)',sat:'ttk',vol:'12,00',hsat:'592.410',total:'7.108.920'},
-        {no:8,uraian:'Saklar & Stop Kontak (atau setara)',sat:'ttk',vol:'45,00',hsat:'257.231',total:'11.575.395'},
-        {no:9,uraian:'Lampu Strip LED (Indirect Ceiling)',sat:'m1',vol:'32,00',hsat:'187.077',total:'5.986.464'},
-        {no:10,uraian:'Titik Kabel Data / LAN (CAT6 atau setara)',sat:'ttk',vol:'3,00',hsat:'779.487',total:'2.338.461'},
-        {no:11,uraian:'Titik Antena TV + Kabel Coaxial',sat:'ttk',vol:'2,00',hsat:'545.641',total:'1.091.282'},
-        {no:12,uraian:'Pemasangan Titik Arde / Grounding (< 2 ohm)',sat:'unit',vol:'1,00',hsat:'4.365.125',total:'4.365.125'},
-        {no:13,uraian:'Unit AC Split 1 PK Inverter (atau setara)',sat:'unit',vol:'1,00',hsat:'6.547.688',total:'6.547.688'},
-        {no:14,uraian:'Unit AC Split 1/2 PK Inverter (atau setara)',sat:'unit',vol:'1,00',hsat:'5.456.407',total:'5.456.407'},
-        {no:15,uraian:'Pipa Freon, Kabel, Braket, Pipa Drain AC',sat:'ttk',vol:'2,00',hsat:'1.558.937',total:'3.117.874'},
-      ]},
-  ]
-};
-
-// ─── RENDER ───
-function renderSummary(id, data, totalK, ppn, grand) {
-  const tbody = document.getElementById(id);
-  let html = '';
-  data.forEach(r => {
-    const barW = Math.round(r.weight / 22 * 100);
-    html += `<tr><td class="code-col">${r.code}</td><td>${r.name}</td><td class="currency" style="text-align:right">${rp(r.total)}</td><td><div class="weight-bar-wrap"><div class="weight-bar"><div class="weight-bar-fill" style="width:${barW}%"></div></div><span class="weight-col">${r.weight.toFixed(1)}%</span></div></td></tr>`;
-  });
-  html += `<tr class="total-row"><td colspan="2"><strong>TOTAL ESTIMASI BIAYA KONSTRUKSI</strong></td><td class="currency" style="text-align:right"><strong>${rp(totalK)}</strong></td><td></td></tr><tr class="tax-row"><td colspan="2">PPN 11%</td><td class="currency" style="text-align:right">${rp(ppn)}</td><td></td></tr><tr class="grand-row"><td colspan="2"><strong>GRAND TOTAL (Inc. PPN)</strong></td><td class="currency" style="text-align:right"><strong>${rp(grand)}</strong></td><td></td></tr>`;
-  tbody.innerHTML = html;
+// ── Calculate helpers ──
+function calcItem(item){
+  if(item[0]==='_') return 0;
+  const flag=item[5];
+  if(flag==='x'||flag==='o') return 0;
+  return (item[2]||0)*(item[4]||0);
+}
+function calcItems(items){ return items.reduce((s,i)=>s+calcItem(i),0); }
+function calcDiv(div){
+  let t=0; for(const k in div) t+=calcItems(div[k].items);
+  return t;
+}
+function calcAll(d){
+  const p=calcItems(d.preliminaries);
+  const s=calcDiv(d.structure);
+  const a=calcDiv(d.architecture);
+  const m=calcDiv(d.mep);
+  const sub=p+s+a+m;
+  return {prelim:p,structure:s,architecture:a,mep:m,subtotal:sub,ppn:Math.round(sub*PPN_RATE),grand:Math.round(sub*(1+PPN_RATE))};
 }
 
-function renderBoq(containerId, data) {
-  const container = document.getElementById(containerId);
-  let html = '';
-  data.forEach((section, idx) => {
-    const sectionId = `${containerId}-sec-${idx}`;
-    html += `<div class="boq-section"><div class="boq-section-header" onclick="toggleSection('${sectionId}', this)"><span class="boq-section-letter">${section.code}</span><span class="boq-section-name">${section.name}</span><span class="boq-section-total currency">${rp(section.subtotal)}</span><span class="chevron">▼</span></div><div class="boq-table-wrap" id="${sectionId}"><table class="boq-table"><thead><tr><th style="width:32px">No</th><th>Uraian Pekerjaan</th><th style="width:44px" class="right">Sat.</th><th style="width:64px" class="right">Vol.</th><th style="width:130px" class="right">Harga Satuan</th><th style="width:140px" class="right">Total Harga</th></tr></thead><tbody>${section.items.map(i=>`<tr><td class="no-col center">${i.no}</td><td>${i.uraian}</td><td class="right muted">${i.sat}</td><td class="right muted">${i.vol}</td><td class="right currency">${i.hsat}</td><td class="right currency">${i.total}</td></tr>`).join('')}<tr class="boq-subtotal"><td colspan="5" style="text-align:right;padding-right:16px;font-weight:600">Subtotal ${section.code}</td><td class="right currency">${rp(section.subtotal)}</td></tr></tbody></table>${section.note?`<div class="boq-note">📌 ${section.note}</div>`:''}</div></div>`;
+// ── Render Final Summary ──
+function renderSummary(id,data){
+  const totals=calcAll(data);
+  const rows=[
+    ['1.0',t('PRELIMINARIES'),totals.prelim],
+    ['2.0',t('STRUCTURE'),totals.structure],
+    ['3.0',t('ARCHITECTURE'),totals.architecture],
+    ['4.0',t('MEP'),totals.mep],
+  ];
+  let h='';
+  const total=totals.subtotal;
+  rows.forEach(r=>{
+    const w=total>0?((r[2]/total)*100).toFixed(1):'0.0';
+    h+=`<tr><td class="code-col">${r[0]}</td><td>${r[1]}</td><td class="cur r">${rp(r[2])}</td><td><div class="wt-wrap"><div class="wt-bar"><div class="wt-fill" style="width:${Math.round(w/50*100)}%"></div></div><span class="wt-val">${w}%</span></div></td></tr>`;
   });
-  container.innerHTML = html;
+  h+=`<tr class="tot-row"><td colspan="2"><strong>${window.t('REAL COST')}</strong></td><td class="cur r"><strong>${rp(totals.subtotal)}</strong></td><td></td></tr>`;
+  h+=`<tr class="tax-row"><td colspan="2">PPN 11%</td><td class="cur r">${rp(totals.ppn)}</td><td></td></tr>`;
+  h+=`<tr class="grand-row"><td colspan="2"><strong>${window.t('GRAND TOTAL')}</strong></td><td class="cur r"><strong>${rp(totals.grand)}</strong></td><td></td></tr>`;
+  h+=`<tr class="unit-row"><td colspan="2">${window.t('Biaya per m²')}</td><td class="cur r">${rp(Math.round(totals.subtotal/data.info.area))}/m²</td><td></td></tr>`;
+  document.getElementById(id).innerHTML=h;
 }
 
-function renderCompare() {
-  const tbody = document.getElementById('compare-table');
-  const s = summaryData.selatan, u = summaryData.utara;
-  let html = '';
-  for (let i = 0; i < s.length; i++) {
-    const diff = s[i].total - u[i].total;
-    const diffStr = diff > 0 ? `<span class="diff-plus">+${rp(diff)}</span>` : `<span class="diff-minus">${rp(diff)}</span>`;
-    html += `<tr><td style="color:var(--rust);font-weight:600">${s[i].code}</td><td>${s[i].name}</td><td class="currency" style="text-align:right">${rp(s[i].total)}</td><td class="currency" style="text-align:right">${rp(u[i].total)}</td><td style="text-align:right">${diffStr}</td></tr>`;
+// ── Render Items Table ──
+function renderItemsTable(items){
+  let h='';
+  items.forEach(item=>{
+    if(item[0]==='_'){
+      h+=`<tr class="grp-hdr"><td colspan="6">${window.t(item[1])}</td></tr>`;
+      return;
+    }
+    const flag=item[5];
+    const cls=flag==='x'?'ex-row':flag==='o'?'ow-row':'';
+    const amt=calcItem(item);
+    const badge=flag==='x'?`<span class="badge-ex">${t('Exclude')}</span>`:flag==='o'?`<span class="badge-ow">${t('By Owner')}</span>`:'';
+    h+=`<tr class="${cls}"><td class="no-c">${item[0]}</td><td>${window.t(item[1])} ${badge}</td><td class="r mu">${item[3]||''}</td><td class="r mu">${item[2]||''}</td><td class="r cur">${item[4]?item[4].toLocaleString('id-ID'):'-'}</td><td class="r cur">${amt>0?amt.toLocaleString('id-ID'):'-'}</td></tr>`;
+  });
+  return h;
+}
+
+// ── Render Preliminaries ──
+function renderPrelim(containerId,data){
+  const items=data.preliminaries;
+  const sub=calcItems(items);
+  let h=`<div class="div-section"><div class="div-hdr" onclick="togDiv(this)"><span class="div-code">1.0</span><span class="div-name">${t('PRELIMINARIES')}</span><span class="div-total cur">${rp(sub)}</span><span class="chv">▼</span></div>`;
+  h+=`<div class="div-body"><table class="boq-tbl"><thead><tr><th style="width:36px">${t('No.')}</th><th>${t('Description')}</th><th class="r" style="width:48px">${t('Unit')}</th><th class="r" style="width:60px">${t('Qty')}</th><th class="r" style="width:110px">${t('Rate (Rp)')}</th><th class="r" style="width:120px">${t('Amount (Rp)')}</th></tr></thead><tbody>`;
+  h+=renderItemsTable(items);
+  h+=`<tr class="sub-row"><td colspan="5" class="r"><strong>${t('PRELIMINARIES')} — ${window.currentLang==='id'?'Dibawa ke Rekapitulasi Akhir':'Carried to Final Summary'}</strong></td><td class="r cur"><strong>${sub.toLocaleString('id-ID')}</strong></td></tr>`;
+  h+=`</tbody></table></div></div>`;
+  document.getElementById(containerId).innerHTML+=h;
+}
+
+// ── Render Division (Structure/Arch/MEP) ──
+function renderDivision(containerId,divCode,divName,divData){
+  const divTotal=calcDiv(divData);
+  let h=`<div class="div-section"><div class="div-hdr" onclick="togDiv(this)"><span class="div-code">${divCode}</span><span class="div-name">${t(divName)}</span><span class="div-total cur">${rp(divTotal)}</span><span class="chv">▼</span></div><div class="div-body">`;
+  for(const k in divData){
+    const sec=divData[k];
+    const secTotal=calcItems(sec.items);
+    const secId=`${containerId}-${divCode}-${k}`;
+    h+=`<div class="sub-section"><div class="sub-hdr" onclick="togSub('${secId}',this)"><span class="sub-code">${k}</span><span class="sub-name">${t(sec.name)}</span><span class="sub-total cur">${rp(secTotal)}</span><span class="chv2">▶</span></div>`;
+    h+=`<div class="sub-body collapsed" id="${secId}"><table class="boq-tbl"><thead><tr><th style="width:36px">${t('No.')}</th><th>${t('Description')}</th><th class="r" style="width:48px">${t('Unit')}</th><th class="r" style="width:60px">${t('Qty')}</th><th class="r" style="width:110px">${t('Rate (Rp)')}</th><th class="r" style="width:120px">${t('Amount (Rp)')}</th></tr></thead><tbody>`;
+    h+=renderItemsTable(sec.items);
+    h+=`<tr class="sub-row"><td colspan="5" class="r"><strong>Subtotal ${k}</strong></td><td class="r cur"><strong>${secTotal.toLocaleString('id-ID')}</strong></td></tr>`;
+    h+=`</tbody></table></div></div>`;
   }
-  const sT=1349275000,uT=1220210000,sG=1497695250,uG=1354433100;
-  html += `<tr style="background:var(--gold-pale)"><td colspan="2" style="font-weight:600;color:var(--ink)">TOTAL KONSTRUKSI</td><td class="currency" style="text-align:right;font-weight:600">${rp(sT)}</td><td class="currency" style="text-align:right;font-weight:600">${rp(uT)}</td><td style="text-align:right"><span class="diff-plus">+${rp(sT-uT)}</span></td></tr><tr class="compare-grand"><td colspan="2">GRAND TOTAL (Inc. PPN 11%)</td><td class="currency" style="text-align:right">${rp(sG)}</td><td class="currency" style="text-align:right">${rp(uG)}</td><td style="text-align:right"><span class="diff-plus">+${rp(sG-uG)}</span></td></tr>`;
-  tbody.innerHTML = html;
+  // Collection
+  h+=`<div class="collection"><strong>${currentLang==='id'?'Kumpulan':'Collection'} — ${t(divName)}</strong><table class="coll-tbl">`;
+  for(const k in divData){
+    h+=`<tr><td class="code-col">${k}</td><td>${t(divData[k].name)}</td><td class="cur r">${rp(calcItems(divData[k].items))}</td></tr>`;
+  }
+  h+=`<tr class="tot-row"><td colspan="2"><strong>TOTAL ${t(divName)}</strong></td><td class="cur r"><strong>${rp(divTotal)}</strong></td></tr>`;
+  h+=`</table></div></div></div>`;
+  document.getElementById(containerId).innerHTML+=h;
 }
 
-window.toggleSection = function(id, header) { document.getElementById(id).classList.toggle('collapsed'); header.classList.toggle('collapsed'); }
-window.switchTab = function(tab) { document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active')); document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active')); document.getElementById('tab-'+tab).classList.add('active'); event.target.classList.add('active'); }
+// ── Render Comparison ──
+function renderCompare(){
+  const ts=calcAll(DATA_SELATAN), tu=calcAll(DATA_UTARA);
+  const cats=[
+    ['1.0',t('PRELIMINARIES'),ts.prelim,tu.prelim],
+    ['2.0',t('STRUCTURE'),ts.structure,tu.structure],
+    ['3.0',t('ARCHITECTURE'),ts.architecture,tu.architecture],
+    ['4.0',t('MEP'),ts.mep,tu.mep],
+  ];
+  let h='';
+  cats.forEach(c=>{
+    const d=c[2]-c[3];
+    const ds=d>0?`<span class="d-plus">+${rp(d)}</span>`:`<span class="d-min">${rp(d)}</span>`;
+    h+=`<tr><td class="code-col">${c[0]}</td><td>${c[1]}</td><td class="cur r">${rp(c[2])}</td><td class="cur r">${rp(c[3])}</td><td class="r">${ds}</td></tr>`;
+  });
+  const dd=ts.subtotal-tu.subtotal;
+  h+=`<tr class="tot-row"><td colspan="2"><strong>${t('REAL COST')}</strong></td><td class="cur r"><strong>${rp(ts.subtotal)}</strong></td><td class="cur r"><strong>${rp(tu.subtotal)}</strong></td><td class="r"><span class="d-plus">+${rp(dd)}</span></td></tr>`;
+  h+=`<tr class="grand-row"><td colspan="2"><strong>${t('GRAND TOTAL (Inc. PPN)')}</strong></td><td class="cur r"><strong>${rp(ts.grand)}</strong></td><td class="cur r"><strong>${rp(tu.grand)}</strong></td><td class="r"><span class="d-plus">+${rp(ts.grand-tu.grand)}</span></td></tr>`;
+  document.getElementById('compare-table').innerHTML=h;
+  // Update cards
+  document.getElementById('cs-total').textContent=rp(ts.subtotal);
+  document.getElementById('cs-ppn').textContent=rp(ts.ppn);
+  document.getElementById('cs-grand').textContent=rp(ts.grand);
+  document.getElementById('cs-m2').textContent=rp(Math.round(ts.subtotal/DATA_SELATAN.info.area))+'/m²';
+  document.getElementById('cu-total').textContent=rp(tu.subtotal);
+  document.getElementById('cu-ppn').textContent=rp(tu.ppn);
+  document.getElementById('cu-grand').textContent=rp(tu.grand);
+  document.getElementById('cu-m2').textContent=rp(Math.round(tu.subtotal/DATA_UTARA.info.area))+'/m²';
+}
 
-renderSummary('summary-selatan', summaryData.selatan, 1349275000, 148420250, 1497695250);
-renderSummary('summary-utara', summaryData.utara, 1220210000, 134223100, 1354433100);
-renderBoq('boq-selatan', boqData.selatan);
-renderBoq('boq-utara', boqData.utara);
+// ── Toggle helpers ──
+window.togDiv=function(el){el.parentElement.classList.toggle('collapsed');};
+window.togSub=function(id,el){document.getElementById(id).classList.toggle('collapsed');el.querySelector('.chv2').textContent=document.getElementById(id).classList.contains('collapsed')?'▶':'▼';};
+window.switchTab=function(tab){document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));document.getElementById('tab-'+tab).classList.add('active');event.target.classList.add('active');};
+
+// ── Build all ──
+function buildTab(containerId,data){
+  const el=document.getElementById(containerId);
+  el.innerHTML='';
+  renderPrelim(containerId,data);
+  renderDivision(containerId,'2.0','STRUCTURE HOUSE CLUSTER EVARA',data.structure);
+  renderDivision(containerId,'3.0','ARCHITECTURE HOUSE CLUSTER EVARA',data.architecture);
+  renderDivision(containerId,'4.0','MECHANICAL ELECTRICAL & PLUMBING',data.mep);
+}
+
+// Init
+renderSummary('summary-selatan',DATA_SELATAN);
+renderSummary('summary-utara',DATA_UTARA);
+buildTab('boq-selatan',DATA_SELATAN);
+buildTab('boq-utara',DATA_UTARA);
 renderCompare();
+// ── Excel Export (Styled with xlsx-js-style) ──
+window.exportExcel = function(data, filename) {
+  const wb = XLSX.utils.book_new();
+  const tot = calcAll(data);
+  const isID = currentLang === 'id';
 
+  const L = {
+    no:'No.', desc:isID?'Uraian Pekerjaan':'Description', unit:isID?'Satuan':'Unit',
+    vol:isID?'Volume':'Qty', rate:isID?'Harga Satuan (Rp)':'Unit Rate (Rp)',
+    amount:isID?'Jumlah Harga (Rp)':'Amount (Rp)', status:'Status',
+    subtotal:'SUBTOTAL', realcost:isID?'BIAYA KONSTRUKSI':'REAL COST',
+    ppn:'PPN 11%', grand:isID?'TOTAL KESELURUHAN':'GRAND TOTAL',
+    perm2:isID?'Biaya per m²':'Cost per m²', area:isID?'Luas Bangunan':'Building Area',
+    weight:isID?'Bobot (%)':'Weight (%)', summary:isID?'REKAPITULASI AKHIR':'FINAL SUMMARY',
+    exclude:isID?'Tidak Termasuk':'Exclude', byowner:isID?'Oleh Owner':'By Owner',
+    carried:isID?'Dibawa ke Rekapitulasi':'Carried to Summary',
+  };
+
+  // ── STYLE PRESETS ──
+  const bdr = {top:{style:'thin',color:{rgb:'D0D0D0'}},bottom:{style:'thin',color:{rgb:'D0D0D0'}},left:{style:'thin',color:{rgb:'D0D0D0'}},right:{style:'thin',color:{rgb:'D0D0D0'}}};
+  const bdrBold = {top:{style:'medium',color:{rgb:'8B4513'}},bottom:{style:'medium',color:{rgb:'8B4513'}},left:{style:'thin',color:{rgb:'D0D0D0'}},right:{style:'thin',color:{rgb:'D0D0D0'}}};
+  const sTitle  = {font:{bold:true,sz:14,color:{rgb:'FFFFFF'}},fill:{fgColor:{rgb:'1A1612'}},alignment:{horizontal:'left'}};
+  const sHeader = {font:{bold:true,sz:9,color:{rgb:'FFFFFF'}},fill:{fgColor:{rgb:'3D3428'}},border:bdr,alignment:{horizontal:'center'}};
+  const sHeaderL = {...sHeader, alignment:{horizontal:'left'}};
+  const sNormal = {font:{sz:10},border:bdr,alignment:{vertical:'top'}};
+  const sRight  = {font:{sz:10},border:bdr,alignment:{horizontal:'right',vertical:'top'}};
+  const sNum    = {font:{sz:10},border:bdr,alignment:{horizontal:'right'},numFmt:'#,##0'};
+  const sGrpHdr = {font:{bold:true,sz:9,color:{rgb:'8B4513'}},fill:{fgColor:{rgb:'FAF6E8'}},border:bdr};
+  const sSubTot = {font:{bold:true,sz:10},fill:{fgColor:{rgb:'FFF8E7'}},border:bdrBold,alignment:{horizontal:'right'}};
+  const sSubTotN= {font:{bold:true,sz:10},fill:{fgColor:{rgb:'FFF8E7'}},border:bdrBold,alignment:{horizontal:'right'},numFmt:'#,##0'};
+  const sGrandL = {font:{bold:true,sz:11,color:{rgb:'FFFFFF'}},fill:{fgColor:{rgb:'1A1612'}},border:bdr};
+  const sGrandN = {font:{bold:true,sz:11,color:{rgb:'C9A94E'}},fill:{fgColor:{rgb:'1A1612'}},border:bdr,alignment:{horizontal:'right'},numFmt:'#,##0'};
+  const sSecHdr = {font:{bold:true,sz:10,color:{rgb:'1A1612'}},fill:{fgColor:{rgb:'E8E0D4'}},border:bdr};
+  const sExclude= {font:{sz:10,color:{rgb:'AAAAAA'},strike:true},border:bdr};
+  const sExclR  = {...sExclude, alignment:{horizontal:'right'}};
+
+  function n(v) { return typeof v==='number' ? Math.round(v) : 0; }
+  function pct(v) { return tot.subtotal>0 ? ((v/tot.subtotal)*100).toFixed(1)+'%' : ''; }
+  function stFlag(f) { return f==='x'?L.exclude:f==='o'?L.byowner:''; }
+
+  // ── Apply styles to a worksheet rows ──
+  function styleWs(ws, styleMap) {
+    for (const addr in styleMap) {
+      if (!ws[addr]) ws[addr] = {v:'',t:'s'};
+      ws[addr].s = styleMap[addr];
+    }
+  }
+
+  function colLetter(c) { let s=''; c++; while(c>0){c--;s=String.fromCharCode(65+c%26)+s;c=Math.floor(c/26);} return s; }
+
+  // ═══ SHEET 1: SUMMARY ═══
+  const s1 = [
+    ['BILL OF QUANTITIES','','',''],
+    [data.info.name,'','',''],
+    [data.info.owner,'','',''],
+    [data.info.loc,'','',''],
+    [L.area+': '+data.info.area+' m²','','',''],
+    ['','','',''],
+    [L.summary,'','',''],
+    [L.no, L.desc, L.amount, L.weight],
+    ['1.0', t('PRELIMINARIES'), n(tot.prelim), pct(tot.prelim)],
+    ['2.0', t('STRUCTURE'), n(tot.structure), pct(tot.structure)],
+    ['3.0', t('ARCHITECTURE'), n(tot.architecture), pct(tot.architecture)],
+    ['4.0', t('MEP'), n(tot.mep), pct(tot.mep)],
+    ['', L.realcost, n(tot.subtotal), '100.0%'],
+    ['', L.ppn, n(tot.ppn), ''],
+    ['', L.grand, n(tot.grand), ''],
+    ['', L.perm2, 'Rp '+Math.round(tot.subtotal/data.info.area).toLocaleString('id-ID'), ''],
+  ];
+  const ws1 = XLSX.utils.aoa_to_sheet(s1);
+  ws1['!cols'] = [{wch:7},{wch:44},{wch:22},{wch:14}];
+  ws1['!merges'] = [{s:{r:0,c:0},e:{r:0,c:3}},{s:{r:1,c:0},e:{r:1,c:3}},{s:{r:6,c:0},e:{r:6,c:3}}];
+  // Style summary
+  const sm = {};
+  for(let c=0;c<4;c++){sm[colLetter(c)+'1']=sTitle;sm[colLetter(c)+'2']={font:{bold:true,sz:11},fill:{fgColor:{rgb:'1A1612'}},alignment:{horizontal:'left'},font:{bold:true,sz:11,color:{rgb:'C9A94E'}}};}
+  for(let c=0;c<4;c++){sm[colLetter(c)+'3']={font:{sz:10,color:{rgb:'E8E0D4'}},fill:{fgColor:{rgb:'1A1612'}}};sm[colLetter(c)+'4']={font:{sz:10,color:{rgb:'E8E0D4'}},fill:{fgColor:{rgb:'1A1612'}}};sm[colLetter(c)+'5']={font:{sz:10,color:{rgb:'E8E0D4'}},fill:{fgColor:{rgb:'1A1612'}}};}
+  for(let c=0;c<4;c++) sm[colLetter(c)+'7']={font:{bold:true,sz:11,color:{rgb:'8B4513'}},fill:{fgColor:{rgb:'FAF6E8'}},border:bdr};
+  for(let c=0;c<4;c++) sm[colLetter(c)+'8']=sHeader;
+  sm['A8']=sHeaderL; sm['B8']=sHeaderL;
+  for(let r=9;r<=12;r++){sm['A'+r]=sNormal;sm['B'+r]=sNormal;sm['C'+r]=sNum;sm['D'+r]=sRight;}
+  for(let c=0;c<4;c++) sm[colLetter(c)+'13']=sSubTot;
+  sm['C13']=sSubTotN;
+  sm['B14']=sNormal;sm['C14']=sNum;sm['D14']=sNormal;
+  for(let c=0;c<4;c++) sm[colLetter(c)+'15']=sGrandL;
+  sm['C15']=sGrandN;
+  sm['B16']=sNormal;sm['C16']=sRight;
+  styleWs(ws1,sm);
+  XLSX.utils.book_append_sheet(wb, ws1, isID?'Rekapitulasi':'Summary');
+
+  // ═══ BUILD DETAIL SHEETS ═══
+  function buildStyledSheet(title, buildRowsFn) {
+    const {rows, styles} = buildRowsFn();
+    const ws = XLSX.utils.aoa_to_sheet(rows);
+    ws['!cols'] = [{wch:7},{wch:52},{wch:8},{wch:10},{wch:16},{wch:18},{wch:14}];
+    styleWs(ws, styles);
+    // merge title row
+    if(rows.length>0) ws['!merges'] = [{s:{r:0,c:0},e:{r:0,c:6}}];
+    XLSX.utils.book_append_sheet(wb, ws, title.substring(0,31));
+  }
+
+  // ── Prelim builder ──
+  function buildPrelimRows() {
+    const rows = [];
+    const styles = {};
+    let r = 0;
+    rows.push([t('PRELIMINARIES'),'','','','','','']); for(let c=0;c<7;c++) styles[colLetter(c)+(r+1)]=sTitle; r++;
+    rows.push(['','','','','','','']); r++;
+    rows.push([L.no,L.desc,L.unit,L.vol,L.rate,L.amount,L.status]);
+    for(let c=0;c<7;c++) styles[colLetter(c)+(r+1)]=c<2?sHeaderL:sHeader; r++;
+    let sub = 0;
+    data.preliminaries.forEach(item => {
+      if(item[0]==='_'){
+        rows.push(['',t(item[1]),'','','','','']);
+        for(let c=0;c<7;c++) styles[colLetter(c)+(r+1)]=sGrpHdr; r++;
+      } else {
+        const fl=item[5]; const amt=calcItem(item); sub+=amt;
+        const isEx=fl==='x'||fl==='o';
+        rows.push([item[0],t(item[1]),item[3]||'',item[2]||'',n(item[4])||'',n(amt)||'',stFlag(fl)]);
+        for(let c=0;c<7;c++) styles[colLetter(c)+(r+1)]=isEx?(c>=3?sExclR:sExclude):(c>=3?sNum:sNormal);
+        styles[colLetter(0)+(r+1)]={...sNormal,alignment:{horizontal:'center'}};
+        r++;
+      }
+    });
+    rows.push(['','','','','','','']); r++;
+    rows.push(['','','','',L.subtotal,n(sub),'']);
+    for(let c=0;c<7;c++) styles[colLetter(c)+(r+1)]=c===5?sSubTotN:sSubTot; r++;
+    return {rows, styles};
+  }
+
+  // ── Division builder ──
+  function buildDivRows(divName, divData) {
+    const rows = [];
+    const styles = {};
+    let r = 0;
+    rows.push([t(divName),'','','','','','']); for(let c=0;c<7;c++) styles[colLetter(c)+(r+1)]=sTitle; r++;
+    rows.push(['','','','','','','']); r++;
+    let divTotal = 0;
+    for(const k in divData){
+      const sec=divData[k]; const secTotal=calcItems(sec.items); divTotal+=secTotal;
+      rows.push(['','','','','','','']); r++;
+      rows.push([k+'.',t(sec.name).toUpperCase(),'','','','','']);
+      for(let c=0;c<7;c++) styles[colLetter(c)+(r+1)]=sSecHdr; r++;
+      rows.push([L.no,L.desc,L.unit,L.vol,L.rate,L.amount,L.status]);
+      for(let c=0;c<7;c++) styles[colLetter(c)+(r+1)]=c<2?sHeaderL:sHeader; r++;
+      sec.items.forEach(item=>{
+        if(item[0]==='_'){
+          rows.push(['',t(item[1]),'','','','','']);
+          for(let c=0;c<7;c++) styles[colLetter(c)+(r+1)]=sGrpHdr; r++;
+        } else {
+          const fl=item[5]; const amt=calcItem(item);
+          const isEx=fl==='x'||fl==='o';
+          rows.push([item[0],t(item[1]),item[3]||'',item[2]||'',n(item[4])||'',n(amt)||'',stFlag(fl)]);
+          for(let c=0;c<7;c++) styles[colLetter(c)+(r+1)]=isEx?(c>=3?sExclR:sExclude):(c>=3?sNum:sNormal);
+          styles[colLetter(0)+(r+1)]={...sNormal,alignment:{horizontal:'center'}};
+          r++;
+        }
+      });
+      rows.push(['','','','','Subtotal '+k,n(secTotal),'']);
+      for(let c=0;c<7;c++) styles[colLetter(c)+(r+1)]=c===5?sSubTotN:sSubTot; r++;
+    }
+    // Collection
+    rows.push(['','','','','','','']); r++;
+    rows.push(['','COLLECTION — '+t(divName),'','','','','']);
+    for(let c=0;c<7;c++) styles[colLetter(c)+(r+1)]=sSecHdr; r++;
+    for(const k in divData){
+      rows.push([k,t(divData[k].name),'','','',n(calcItems(divData[k].items)),'']);
+      for(let c=0;c<7;c++) styles[colLetter(c)+(r+1)]=c===5?sNum:sNormal; r++;
+    }
+    rows.push(['','','','','TOTAL '+t(divName),n(divTotal),'']);
+    for(let c=0;c<7;c++) styles[colLetter(c)+(r+1)]=c===5?sGrandN:sGrandL; r++;
+    return {rows, styles};
+  }
+
+  buildStyledSheet(t('PRELIMINARIES'), ()=>buildPrelimRows());
+  buildStyledSheet(t('STRUCTURE'), ()=>buildDivRows('STRUCTURE', data.structure));
+  buildStyledSheet(t('ARCHITECTURE'), ()=>buildDivRows('ARCHITECTURE', data.architecture));
+  buildStyledSheet(t('MEP'), ()=>buildDivRows('MEP', data.mep));
+
+  XLSX.writeFile(wb, filename+'.xlsx');
+};
+
+// ── PDF Export (Print-friendly) ──
+window.exportPDF = function(data, filename) {
+  const tot = calcAll(data);
+  const isID = currentLang === 'id';
+
+  const L = {
+    no: 'No.', desc: isID ? 'Uraian Pekerjaan' : 'Description',
+    unit: isID ? 'Satuan' : 'Unit', vol: isID ? 'Volume' : 'Qty',
+    rate: isID ? 'Harga Satuan (Rp)' : 'Unit Rate (Rp)',
+    amount: isID ? 'Jumlah Harga (Rp)' : 'Amount (Rp)',
+    summary: isID ? 'REKAPITULASI AKHIR' : 'FINAL SUMMARY',
+    realcost: isID ? 'BIAYA KONSTRUKSI' : 'REAL COST',
+    grand: isID ? 'TOTAL KESELURUHAN' : 'GRAND TOTAL',
+    perm2: isID ? 'Biaya per m²' : 'Cost per m²',
+    exclude: isID ? 'Tidak Termasuk' : 'Exclude',
+    byowner: isID ? 'Oleh Owner' : 'By Owner',
+  };
+
+  function rp(v) { return 'Rp ' + Math.round(v).toLocaleString('id-ID'); }
+  function pct(v) { return tot.subtotal > 0 ? ((v / tot.subtotal) * 100).toFixed(1) + '%' : ''; }
+  function badge(flag) {
+    if (flag === 'x') return '<span style="background:#e74c3c;color:#fff;font-size:9px;padding:1px 4px;border-radius:2px">' + L.exclude + '</span>';
+    if (flag === 'o') return '<span style="background:#2563eb;color:#fff;font-size:9px;padding:1px 4px;border-radius:2px">' + L.byowner + '</span>';
+    return '';
+  }
+
+  function renderItems(items) {
+    let h = '';
+    items.forEach(item => {
+      if (item[0] === '_') {
+        h += '<tr style="background:#f4f1ec"><td colspan="6" style="font-weight:600;font-size:10px;text-transform:uppercase;color:#8b4513;padding:4px 6px">' + t(item[1]) + '</td></tr>';
+      } else {
+        const flag = item[5];
+        const cls = flag === 'x' ? 'opacity:.4;text-decoration:line-through' : flag === 'o' ? 'opacity:.5' : '';
+        const amt = calcItem(item);
+        h += '<tr style="' + cls + '"><td style="text-align:center;color:#888">' + item[0] + '</td><td>' + t(item[1]) + ' ' + badge(flag) + '</td><td class="r">' + (item[3] || '') + '</td><td class="r">' + (item[2] || '') + '</td><td class="r">' + (item[4] ? item[4].toLocaleString('id-ID') : '-') + '</td><td class="r">' + (amt > 0 ? amt.toLocaleString('id-ID') : '-') + '</td></tr>';
+      }
+    });
+    return h;
+  }
+
+  function renderDiv(divName, divData) {
+    let h = '<h2 style="color:#8b4513;border-bottom:2px solid #8b4513;padding-bottom:4px;margin:24px 0 12px">' + t(divName) + '</h2>';
+    let divTotal = 0;
+    for (const k in divData) {
+      const sec = divData[k];
+      const secTotal = calcItems(sec.items);
+      divTotal += secTotal;
+      h += '<h3 style="background:#faf6e8;padding:6px 10px;border-left:3px solid #c9a94e;margin:16px 0 8px;font-size:12px">' + k + '. ' + t(sec.name) + ' <span style="float:right;color:#2d6a4f">' + rp(secTotal) + '</span></h3>';
+      h += '<table><thead><tr><th style="width:30px">' + L.no + '</th><th>' + L.desc + '</th><th style="width:40px">' + L.unit + '</th><th style="width:50px">' + L.vol + '</th><th style="width:90px">' + L.rate + '</th><th style="width:100px">' + L.amount + '</th></tr></thead><tbody>';
+      h += renderItems(sec.items);
+      h += '<tr style="background:#faf6e8;border-top:2px solid #c9a94e"><td colspan="5" style="text-align:right;font-weight:700">Subtotal ' + k + '</td><td class="r" style="font-weight:700">' + secTotal.toLocaleString('id-ID') + '</td></tr>';
+      h += '</tbody></table>';
+    }
+    // Collection
+    h += '<div style="background:#faf8f4;border:1px solid #ebe6de;border-radius:6px;padding:12px 16px;margin:16px 0"><strong>Collection — ' + t(divName) + '</strong><table style="margin-top:8px">';
+    for (const k in divData) {
+      h += '<tr><td style="width:30px;color:#8b4513;font-weight:600">' + k + '</td><td>' + t(divData[k].name) + '</td><td class="r">' + rp(calcItems(divData[k].items)) + '</td></tr>';
+    }
+    h += '<tr style="background:#faf6e8;border-top:2px solid #c9a94e"><td colspan="2" style="font-weight:700">TOTAL ' + t(divName) + '</td><td class="r" style="font-weight:700">' + rp(divTotal) + '</td></tr>';
+    h += '</table></div>';
+    return h;
+  }
+
+  // Build full HTML
+  let html = '<!DOCTYPE html><html><head><meta charset="UTF-8"><title>' + filename + '</title>';
+  html += '<style>';
+  html += 'body{font-family:"Segoe UI",system-ui,sans-serif;font-size:11px;color:#1a1612;max-width:800px;margin:0 auto;padding:20px}';
+  html += 'h1{font-size:16px;margin:0} h2{font-size:14px;margin:20px 0 8px} h3{font-size:12px}';
+  html += 'table{width:100%;border-collapse:collapse;margin-bottom:12px;font-size:10px}';
+  html += 'th{background:#1a1612;color:#e8e0d4;padding:5px 6px;font-size:9px;text-transform:uppercase;letter-spacing:.3px;text-align:left}';
+  html += 'td{padding:4px 6px;border-bottom:1px solid #f0ece6;vertical-align:top}';
+  html += '.r{text-align:right;font-variant-numeric:tabular-nums}';
+  html += '.header-block{background:#1a1612;color:#e8e0d4;padding:20px 24px;border-radius:8px;margin-bottom:20px}';
+  html += '.header-block h1{color:#c9a94e} .header-block p{margin:2px 0;opacity:.8;font-size:11px}';
+  html += '.summary-tbl th{background:#1a1612;color:#c9a94e}';
+  html += '.tot-row{background:#faf6e8} .tot-row td{font-weight:700;border-top:2px solid #c9a94e}';
+  html += '.grand-row{background:#1a1612} .grand-row td{color:#c9a94e!important;font-weight:700}';
+  html += '.sig-strip{display:flex;justify-content:space-between;margin-top:40px;padding-top:20px;border-top:2px solid #e8e0d4}';
+  html += '.sig-cell{text-align:center;flex:1} .sig-lbl{font-size:9px;text-transform:uppercase;color:#888;margin-bottom:50px}';
+  html += '.sig-name{font-weight:600;border-top:1px solid #1a1612;padding-top:6px;display:inline-block;min-width:140px}';
+  html += '@media print{body{padding:10px;max-width:100%} .no-print{display:none}}';
+  html += '</style></head><body>';
+
+  // Header
+  html += '<div class="header-block"><h1>BILL OF QUANTITIES</h1>';
+  html += '<p style="font-size:13px;margin-top:4px"><strong>' + data.info.name + '</strong></p>';
+  html += '<p>' + data.info.owner + '</p>';
+  html += '<p>' + data.info.loc + '</p>';
+  html += '<p>' + (isID ? 'Luas' : 'Area') + ': <strong>' + data.info.area + ' m²</strong></p>';
+  html += '<p>Quantity Surveyor: <strong>Ratio Construction</strong></p></div>';
+
+  // Print button
+  html += '<div class="no-print" style="text-align:center;margin-bottom:20px"><button onclick="window.print()" style="background:#8b4513;color:#fff;border:none;padding:10px 24px;border-radius:6px;font-size:13px;cursor:pointer">🖨️ Print / Save as PDF</button></div>';
+
+  // Summary
+  html += '<h2 style="color:#8b4513;border-bottom:2px solid #8b4513;padding-bottom:4px">' + L.summary + '</h2>';
+  html += '<table class="summary-tbl"><thead><tr><th style="width:40px">' + L.no + '</th><th>' + L.desc + '</th><th style="width:160px">' + L.amount + '</th><th style="width:80px">%</th></tr></thead><tbody>';
+  html += '<tr><td>1.0</td><td>' + t('PRELIMINARIES') + '</td><td class="r">' + rp(tot.prelim) + '</td><td class="r">' + pct(tot.prelim) + '</td></tr>';
+  html += '<tr><td>2.0</td><td>' + t('STRUCTURE') + '</td><td class="r">' + rp(tot.structure) + '</td><td class="r">' + pct(tot.structure) + '</td></tr>';
+  html += '<tr><td>3.0</td><td>' + t('ARCHITECTURE') + '</td><td class="r">' + rp(tot.architecture) + '</td><td class="r">' + pct(tot.architecture) + '</td></tr>';
+  html += '<tr><td>4.0</td><td>' + t('MEP') + '</td><td class="r">' + rp(tot.mep) + '</td><td class="r">' + pct(tot.mep) + '</td></tr>';
+  html += '<tr class="tot-row"><td colspan="2">' + L.realcost + '</td><td class="r">' + rp(tot.subtotal) + '</td><td class="r">100%</td></tr>';
+  html += '<tr><td colspan="2">PPN 11%</td><td class="r">' + rp(tot.ppn) + '</td><td></td></tr>';
+  html += '<tr class="grand-row"><td colspan="2">' + L.grand + '</td><td class="r">' + rp(tot.grand) + '</td><td></td></tr>';
+  html += '<tr><td colspan="2">' + L.perm2 + '</td><td class="r"><strong>' + rp(Math.round(tot.subtotal / data.info.area)) + '/m²</strong></td><td></td></tr>';
+  html += '</tbody></table>';
+
+  // Preliminaries
+  html += '<h2 style="color:#8b4513;border-bottom:2px solid #8b4513;padding-bottom:4px;margin-top:32px">1.0 ' + t('PRELIMINARIES') + '</h2>';
+  html += '<table><thead><tr><th style="width:30px">' + L.no + '</th><th>' + L.desc + '</th><th style="width:40px">' + L.unit + '</th><th style="width:50px">' + L.vol + '</th><th style="width:90px">' + L.rate + '</th><th style="width:100px">' + L.amount + '</th></tr></thead><tbody>';
+  html += renderItems(data.preliminaries);
+  const prelimSub = calcItems(data.preliminaries);
+  html += '<tr class="tot-row"><td colspan="5" style="text-align:right">' + t('PRELIMINARIES') + ' — ' + L.realcost + '</td><td class="r">' + prelimSub.toLocaleString('id-ID') + '</td></tr>';
+  html += '</tbody></table>';
+
+  // Structure, Architecture, MEP
+  html += renderDiv('STRUCTURE', data.structure);
+  html += '<div style="page-break-before:always"></div>';
+  html += renderDiv('ARCHITECTURE', data.architecture);
+  html += '<div style="page-break-before:always"></div>';
+  html += renderDiv('MEP', data.mep);
+
+  // Signature
+  html += '<div class="sig-strip">';
+  html += '<div class="sig-cell"><div class="sig-lbl">' + (isID ? 'Dibuat oleh' : 'Prepared by') + '</div><div class="sig-name">Quantity Surveyor</div><div style="font-size:10px;color:#888">Ratio Construction</div></div>';
+  html += '<div class="sig-cell"><div class="sig-lbl">' + (isID ? 'Diperiksa oleh' : 'Checked by') + '</div><div class="sig-name">Project Manager</div><div style="font-size:10px;color:#888">Contractor</div></div>';
+  html += '<div class="sig-cell"><div class="sig-lbl">' + (isID ? 'Disetujui oleh' : 'Approved by') + '</div><div class="sig-name">Owner Representative</div><div style="font-size:10px;color:#888">PT. Waskita Karya Realty</div></div>';
+  html += '</div>';
+
+  html += '</body></html>';
+
+  // Open in new tab
+  const w = window.open('', '_blank');
+  w.document.write(html);
+  w.document.close();
+};

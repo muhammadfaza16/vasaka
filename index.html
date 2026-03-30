@@ -3,254 +3,156 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RAB — Vasaka Bali EVARA | PT. Vasaka Bali Premiere Constructor</title>
-    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&display=swap" rel="stylesheet">
+    <title>BOQ — Vasaka Cluster EVARA | PT Waskita Karya Realty</title>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 
-<!-- HEADER -->
 <header class="site-header">
   <div class="header-inner">
     <div class="brand">
-      <div class="brand-name">PT. Vasaka Bali Premiere Constructor</div>
-      <div class="brand-sub">Jl. Marina Raya No. 88, Denpasar, Bali</div>
+      <div class="brand-name">BILL OF QUANTITIES</div>
+      <div class="brand-sub" id="brand-doc">Structure, Architecture & MEP</div>
     </div>
     <div class="doc-badge">
-      <div>Tanggal <strong>28 Maret 2026</strong></div>
-      <div>Masa berlaku <strong>30 Hari Kalender</strong></div>
+      <div>Quantity Surveyor: <strong>Ratio Construction</strong></div>
+      <div>Format Ref: <strong>PT Rusira Ekatwa Zafar</strong></div>
+      <div class="lang-switch-wrap" style="margin-top:8px;">
+        <button id="lang-id" class="lang-btn" onclick="toggleLang('id')">ID</button>
+        <button id="lang-en" class="lang-btn active" onclick="toggleLang('en')">EN</button>
+      </div>
     </div>
   </div>
 </header>
 
-<!-- TAB NAV -->
 <nav class="tab-nav">
   <div class="tab-nav-inner">
     <button class="tab-btn active" onclick="switchTab('selatan')">EVARA Selatan</button>
     <button class="tab-btn" onclick="switchTab('utara')">EVARA Utara</button>
-    <button class="tab-btn" onclick="switchTab('compare')">Perbandingan</button>
+    <button class="tab-btn code-tag-text" data-en="Compare" data-id="Perbandingan" onclick="switchTab('compare')">Perbandingan</button>
   </div>
 </nav>
 
 <main class="main">
 
-  <!-- ══════════════════════════════════════
-       EVARA SELATAN
-  ══════════════════════════════════════ -->
+  <!-- ═══ EVARA SELATAN ═══ -->
   <div id="tab-selatan" class="tab-panel active">
-
-    <button class="print-btn" onclick="window.print()">⎙ &nbsp;Cetak / Simpan PDF</button>
-
-    <!-- Project Info -->
     <div class="project-card">
-      <div class="project-info-group">
-        <div class="info-label">Nama Proyek</div>
-        <div class="info-value"><strong>Vasaka Bali EVARA SELATAN</strong>3 Kamar Tidur · 3 Kamar Mandi</div>
-      </div>
-      <div class="project-info-group">
-        <div class="info-label">Luas Area</div>
-        <div class="info-value"><strong>125,58 m²</strong>Lt.1 : 64,48 m² &nbsp;·&nbsp; Lt.2 : 61,10 m²</div>
-      </div>
-      <div class="project-info-group">
-        <div class="info-label">Dokumen &amp; Waktu Pelaksanaan</div>
-        <div class="info-value">VBC/RAB/2026-03/EVARA-001 Rev.1<br>210 Hari Kalender (±7 Bulan)</div>
-      </div>
+      <div class="pinfo"><div class="plbl" data-en="Project">Project</div><div class="pval"><strong>VASAKA CLUSTER EVARA STANDART SELATAN</strong></div></div>
+      <div class="pinfo"><div class="plbl" data-en="Owner">Owner</div><div class="pval">PT. WASKITA KARYA REALTY</div></div>
+      <div class="pinfo"><div class="plbl" data-en="Location">Location</div><div class="pval">JL. WR SUPRATMAN, DENPASAR TIMUR, BALI</div></div>
+      <div class="pinfo"><div class="plbl" data-en="Area">Luas</div><div class="pval"><strong>125,58 m²</strong> — Lt.1: 64,48 m² · Lt.2: 61,10 m² — <span class="code-tag-text" data-en="3 Bed · 3 Bath" data-id="3 Kamar Tidur · 3 Kamar Mandi">3 Bed · 3 Bath</span></div></div>
     </div>
 
-    <!-- Summary -->
-    <div class="summary-block">
-      <div class="section-title"><span class="code-tag">RINGKASAN</span> Rekapitulasi Biaya</div>
-      <table class="summary-table">
-        <thead>
-          <tr>
-            <th style="width:48px">Kode</th>
-            <th>Uraian Pekerjaan</th>
-            <th style="width:200px">Total Harga</th>
-            <th style="width:120px" class="right">Bobot</th>
-          </tr>
-        </thead>
-        <tbody id="summary-selatan"></tbody>
-      </table>
-    </div>
+    <div class="section-title"><span class="code-tag">FINAL SUMMARY</span> <span class="code-tag-text" data-en="Cost Recapitulation" data-id="Rekapitulasi Biaya">Rekapitulasi Biaya</span></div>
+    <table class="summary-table">
+      <thead><tr><th style="width:48px" class="code-tag-text" data-en="No." data-id="No.">No.</th><th class="code-tag-text" data-en="Description" data-id="Uraian Pekerjaan">Description</th><th style="width:180px" class="code-tag-text" data-en="Total Rate (Rp)" data-id="Total Harga (Rp)">Total Rate (Rp)</th><th style="width:100px" class="r code-tag-text" data-en="Weight" data-id="Bobot">Bobot</th></tr></thead>
+      <tbody id="summary-selatan"></tbody>
+    </table>
 
-    <!-- BOQ Sections -->
-    <div class="section-title"><span class="code-tag">BOQ</span> Rincian Bill of Quantities</div>
+    <div class="section-title"><span class="code-tag">BOQ DETAIL</span> Bill of Quantities</div>
     <div id="boq-selatan"></div>
 
-    <!-- Exclusions -->
+    <div style="text-align:center;margin:20px 0;display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
+      <button class="dl-btn" onclick="exportExcel(DATA_SELATAN,'BOQ_Evara_Selatan')">📥 Download Excel</button>
+      <button class="dl-btn dl-pdf" onclick="exportPDF(DATA_SELATAN,'BOQ_Evara_Selatan')">📄 Preview & Print PDF</button>
+    </div>
+
     <div class="exclusions-card">
-      <div class="exclusions-title">⚠ Tidak Termasuk dalam RAB</div>
-      <ul class="exclusions-list">
-        <li>Pengurusan IMB / PBG dan retribusi daerah</li>
-        <li>Pekerjaan pagar keliling kavling, pagar depan, dan gerbang</li>
-        <li>Pekerjaan Landscape / Taman (rumput, tanaman, kolam, gazebo)</li>
-        <li>Furnitur loose dan built-in cabinet</li>
-        <li>Pengadaan Genset dan instalasi jaringan CCTV</li>
-        <li>Instalasi internet (Fiber Optic ISP) dan jaringan telepon</li>
-        <li>Biaya relokasi utilitas existing</li>
-        <li>Biaya sambungan baru PLN (> 3500 VA) dan PDAM</li>
-        <li>Kenaikan harga material di luar periode validitas penawaran</li>
+      <div class="exclusions-title code-tag-text" data-en="Notes" data-id="Catatan">Notes</div>
+      <ul class="exclusions-list code-tag-text" data-en="<li>Contractor should not modify the items & quantity/volume in this BOQ</li><li>Should there any scope of work(s) not yet in this BOQ, contractor should submit in separate page(s)</li><li>Items marked &lt;span class='badge-ex'&gt;Exclude&lt;/span&gt; are not included in pricing</li><li>Items marked &lt;span class='badge-ow'&gt;By Owner&lt;/span&gt; are provided by owner</li>" data-id="<li>Kontraktor tidak diperkenankan merubah item & kuantitas/volume di dalam BOQ ini</li><li>Jika ada lingkup pekerjaan yang belum ada di BOQ ini, kontraktor harus melampirkan di halaman terpisah</li><li>Item bertanda &lt;span class='badge-ex'&gt;Dikecualikan&lt;/span&gt; tidak termasuk dalam penawaran harga</li><li>Item bertanda &lt;span class='badge-ow'&gt;Dr Owner&lt;/span&gt; material disediakan oleh Owner</li>">
+        <li>Contractor should not modify the items & quantity/volume in this BOQ</li>
+        <li>Should there any scope of work(s) not yet in this BOQ, contractor should submit in separate page(s)</li>
+        <li>Items marked <span class="badge-ex">Exclude</span> are not included in pricing</li>
+        <li>Items marked <span class="badge-ow">By Owner</span> are provided by owner</li>
       </ul>
-      <div class="validity-strip">
-        <div class="validity-item">Masa Berlaku Penawaran: <strong>30 Hari Kalender</strong></div>
-        <div class="validity-item">Masa Pemeliharaan: <strong>90 Hari Kalender</strong> setelah PHO</div>
-      </div>
     </div>
 
-    <!-- Signature -->
     <div class="signature-strip">
-      <div class="sig-cell">
-        <div class="sig-label">Dibuat Oleh</div>
-        <div class="sig-name">Ir. Made Alex W.</div>
-        <div class="sig-role">Estimator VBC</div>
-      </div>
-      <div class="sig-cell">
-        <div class="sig-label">Diperiksa Oleh</div>
-        <div class="sig-name">Kepala Estimator</div>
-        <div class="sig-role">PT. Vasaka Bali Constructor</div>
-      </div>
-      <div class="sig-cell">
-        <div class="sig-label">Disetujui Oleh</div>
-        <div class="sig-name">Bapak / Ibu [Nama Klien]</div>
-        <div class="sig-role">Pemilik Proyek</div>
-      </div>
+      <div class="sig-cell"><div class="sig-label code-tag-text" data-en="Prepared by" data-id="Dibuat oleh">Prepared by</div><div class="sig-name">Quantity Surveyor</div><div class="sig-role">Ratio Construction</div></div>
+      <div class="sig-cell"><div class="sig-label code-tag-text" data-en="Checked by" data-id="Diperiksa oleh">Checked by</div><div class="sig-name">Project Manager</div><div class="sig-role">Contractor</div></div>
+      <div class="sig-cell"><div class="sig-label code-tag-text" data-en="Approved by" data-id="Disetujui oleh">Approved by</div><div class="sig-name">Owner Representative</div><div class="sig-role">PT. Waskita Karya Realty</div></div>
     </div>
+  </div>
 
-  </div><!-- /selatan -->
-
-
-  <!-- ══════════════════════════════════════
-       EVARA UTARA
-  ══════════════════════════════════════ -->
+  <!-- ═══ EVARA UTARA ═══ -->
   <div id="tab-utara" class="tab-panel">
-
-    <button class="print-btn" onclick="window.print()">⎙ &nbsp;Cetak / Simpan PDF</button>
-
     <div class="project-card">
-      <div class="project-info-group">
-        <div class="info-label">Nama Proyek</div>
-        <div class="info-value"><strong>Vasaka Bali EVARA UTARA</strong>2 Kamar Tidur · 3 Kamar Mandi</div>
-      </div>
-      <div class="project-info-group">
-        <div class="info-label">Luas Area</div>
-        <div class="info-value"><strong>111,87 m²</strong>Lt.1 : 53,95 m² &nbsp;·&nbsp; Lt.2 : 57,92 m²</div>
-      </div>
-      <div class="project-info-group">
-        <div class="info-label">Dokumen &amp; Waktu Pelaksanaan</div>
-        <div class="info-value">VBC/RAB/2026-03/EVARA-002 Rev.1<br>210 Hari Kalender (±7 Bulan)</div>
-      </div>
+      <div class="pinfo"><div class="plbl" data-en="Project">Project</div><div class="pval"><strong>VASAKA CLUSTER EVARA STANDART UTARA</strong></div></div>
+      <div class="pinfo"><div class="plbl" data-en="Owner">Owner</div><div class="pval">PT. WASKITA KARYA REALTY</div></div>
+      <div class="pinfo"><div class="plbl" data-en="Location">Location</div><div class="pval">JL. WR SUPRATMAN, DENPASAR TIMUR, BALI</div></div>
+      <div class="pinfo"><div class="plbl" data-en="Area">Luas</div><div class="pval"><strong>111,87 m²</strong> — Lt.1: 53,95 m² · Lt.2: 57,92 m² — <span class="code-tag-text" data-en="2 Bed · 3 Bath" data-id="2 Kamar Tidur · 3 Kamar Mandi">2 Bed · 3 Bath</span></div></div>
     </div>
 
-    <div class="summary-block">
-      <div class="section-title"><span class="code-tag">RINGKASAN</span> Rekapitulasi Biaya</div>
-      <table class="summary-table">
-        <thead>
-          <tr>
-            <th style="width:48px">Kode</th>
-            <th>Uraian Pekerjaan</th>
-            <th style="width:200px">Total Harga</th>
-            <th style="width:120px" class="right">Bobot</th>
-          </tr>
-        </thead>
-        <tbody id="summary-utara"></tbody>
-      </table>
-    </div>
+    <div class="section-title"><span class="code-tag">FINAL SUMMARY</span> <span class="code-tag-text" data-en="Cost Recapitulation" data-id="Rekapitulasi Biaya">Rekapitulasi Biaya</span></div>
+    <table class="summary-table">
+      <thead><tr><th style="width:48px" class="code-tag-text" data-en="No." data-id="No.">No.</th><th class="code-tag-text" data-en="Description" data-id="Uraian Pekerjaan">Description</th><th style="width:180px" class="code-tag-text" data-en="Total Rate (Rp)" data-id="Total Harga (Rp)">Total Rate (Rp)</th><th style="width:100px" class="r code-tag-text" data-en="Weight" data-id="Bobot">Bobot</th></tr></thead>
+      <tbody id="summary-utara"></tbody>
+    </table>
 
-    <div class="section-title"><span class="code-tag">BOQ</span> Rincian Bill of Quantities</div>
+    <div class="section-title"><span class="code-tag">BOQ DETAIL</span> Bill of Quantities</div>
     <div id="boq-utara"></div>
 
+    <div style="text-align:center;margin:20px 0;display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
+      <button class="dl-btn" onclick="exportExcel(DATA_UTARA,'BOQ_Evara_Utara')">📥 Download Excel</button>
+      <button class="dl-btn dl-pdf" onclick="exportPDF(DATA_UTARA,'BOQ_Evara_Utara')">📄 Preview & Print PDF</button>
+    </div>
+
     <div class="exclusions-card">
-      <div class="exclusions-title">⚠ Tidak Termasuk dalam RAB</div>
-      <ul class="exclusions-list">
-        <li>Pengurusan IMB / PBG dan retribusi daerah</li>
-        <li>Pekerjaan pagar keliling kavling, pagar depan, dan gerbang</li>
-        <li>Pekerjaan Landscape / Taman (rumput, tanaman, kolam, gazebo)</li>
-        <li>Furnitur loose dan built-in cabinet</li>
-        <li>Pengadaan Genset dan instalasi jaringan CCTV</li>
-        <li>Instalasi internet (Fiber Optic ISP) dan jaringan telepon</li>
-        <li>Biaya relokasi utilitas existing</li>
-        <li>Biaya sambungan baru PLN (> 3500 VA) dan PDAM</li>
-        <li>Kenaikan harga material di luar periode validitas penawaran</li>
+      <div class="exclusions-title code-tag-text" data-en="Notes" data-id="Catatan">Notes</div>
+      <ul class="exclusions-list code-tag-text" data-en="<li>Contractor should not modify the items & quantity/volume in this BOQ</li><li>Should there any scope of work(s) not yet in this BOQ, contractor should submit in separate page(s)</li><li>Items marked &lt;span class='badge-ex'&gt;Exclude&lt;/span&gt; are not included in pricing</li><li>Items marked &lt;span class='badge-ow'&gt;By Owner&lt;/span&gt; are provided by owner</li>" data-id="<li>Kontraktor tidak diperkenankan merubah item & kuantitas/volume di dalam BOQ ini</li><li>Jika ada lingkup pekerjaan yang belum ada di BOQ ini, kontraktor harus melampirkan di halaman terpisah</li><li>Item bertanda &lt;span class='badge-ex'&gt;Dikecualikan&lt;/span&gt; tidak termasuk dalam penawaran harga</li><li>Item bertanda &lt;span class='badge-ow'&gt;Dr Owner&lt;/span&gt; material disediakan oleh Owner</li>">
+        <li>Contractor should not modify the items & quantity/volume in this BOQ</li>
+        <li>Should there any scope of work(s) not yet in this BOQ, contractor should submit in separate page(s)</li>
+        <li>Items marked <span class="badge-ex">Exclude</span> are not included in pricing</li>
+        <li>Items marked <span class="badge-ow">By Owner</span> are provided by owner</li>
       </ul>
-      <div class="validity-strip">
-        <div class="validity-item">Masa Berlaku Penawaran: <strong>30 Hari Kalender</strong></div>
-        <div class="validity-item">Masa Pemeliharaan: <strong>90 Hari Kalender</strong> setelah PHO</div>
-      </div>
     </div>
 
     <div class="signature-strip">
-      <div class="sig-cell">
-        <div class="sig-label">Dibuat Oleh</div>
-        <div class="sig-name">Ir. Made Alex W.</div>
-        <div class="sig-role">Estimator VBC</div>
-      </div>
-      <div class="sig-cell">
-        <div class="sig-label">Diperiksa Oleh</div>
-        <div class="sig-name">Kepala Estimator</div>
-        <div class="sig-role">PT. Vasaka Bali Constructor</div>
-      </div>
-      <div class="sig-cell">
-        <div class="sig-label">Disetujui Oleh</div>
-        <div class="sig-name">Bapak / Ibu [Nama Klien]</div>
-        <div class="sig-role">Pemilik Proyek</div>
-      </div>
+      <div class="sig-cell"><div class="sig-label code-tag-text" data-en="Prepared by" data-id="Dibuat oleh">Prepared by</div><div class="sig-name">Quantity Surveyor</div><div class="sig-role">Ratio Construction</div></div>
+      <div class="sig-cell"><div class="sig-label code-tag-text" data-en="Checked by" data-id="Diperiksa oleh">Checked by</div><div class="sig-name">Project Manager</div><div class="sig-role">Contractor</div></div>
+      <div class="sig-cell"><div class="sig-label code-tag-text" data-en="Approved by" data-id="Disetujui oleh">Approved by</div><div class="sig-name">Owner Representative</div><div class="sig-role">PT. Waskita Karya Realty</div></div>
     </div>
+  </div>
 
-  </div><!-- /utara -->
-
-
-  <!-- ══════════════════════════════════════
-       PERBANDINGAN
-  ══════════════════════════════════════ -->
+  <!-- ═══ PERBANDINGAN ═══ -->
   <div id="tab-compare" class="tab-panel">
-
     <div class="compare-grid">
       <div class="compare-card">
-        <div class="compare-card-title">EVARA SELATAN</div>
-        <div class="compare-card-sub">VBC/RAB/2026-03/EVARA-001 Rev.2</div>
-        <div class="compare-stat"><span class="compare-stat-label">Luas Area</span><span class="compare-stat-value">125,58 m²</span></div>
-        <div class="compare-stat"><span class="compare-stat-label">Kamar Tidur</span><span class="compare-stat-value">3 Kamar</span></div>
-        <div class="compare-stat"><span class="compare-stat-label">Total Konstruksi</span><span class="compare-stat-value">Rp 1.349.275.000</span></div>
-        <div class="compare-stat"><span class="compare-stat-label">PPN 11%</span><span class="compare-stat-value">Rp 148.420.250</span></div>
-        <div class="compare-stat"><span class="compare-stat-label">Grand Total</span><span class="compare-stat-value big">Rp 1.497.695.250</span></div>
-        <div class="compare-stat"><span class="compare-stat-label">Biaya per m²</span><span class="compare-stat-value">Rp 10.742.000 / m²</span></div>
+        <div class="cc-title">EVARA SELATAN</div>
+        <div class="cc-sub code-tag-text" data-en="3 Bed · 125,58 m²" data-id="3 Kamar Tidur · 125,58 m²">3 Bed · 125,58 m²</div>
+        <div class="cc-stat"><span class="code-tag-text" data-en="Real Cost" data-id="Biaya Konstruksi">Real Cost</span><span id="cs-total">-</span></div>
+        <div class="cc-stat"><span>PPN 11%</span><span id="cs-ppn">-</span></div>
+        <div class="cc-stat big"><span class="code-tag-text" data-en="Grand Total" data-id="Total Keseluruhan">Grand Total</span><span id="cs-grand">-</span></div>
+        <div class="cc-stat"><span class="code-tag-text" data-en="Per m²" data-id="Per m²">Per m²</span><span id="cs-m2">-</span></div>
       </div>
       <div class="compare-card">
-        <div class="compare-card-title">EVARA UTARA</div>
-        <div class="compare-card-sub">VBC/RAB/2026-03/EVARA-002 Rev.2</div>
-        <div class="compare-stat"><span class="compare-stat-label">Luas Area</span><span class="compare-stat-value">111,87 m²</span></div>
-        <div class="compare-stat"><span class="compare-stat-label">Kamar Tidur</span><span class="compare-stat-value">2 Kamar</span></div>
-        <div class="compare-stat"><span class="compare-stat-label">Total Konstruksi</span><span class="compare-stat-value">Rp 1.220.210.000</span></div>
-        <div class="compare-stat"><span class="compare-stat-label">PPN 11%</span><span class="compare-stat-value">Rp 134.223.100</span></div>
-        <div class="compare-stat"><span class="compare-stat-label">Grand Total</span><span class="compare-stat-value big">Rp 1.354.433.100</span></div>
-        <div class="compare-stat"><span class="compare-stat-label">Biaya per m²</span><span class="compare-stat-value">Rp 10.908.000 / m²</span></div>
+        <div class="cc-title">EVARA UTARA</div>
+        <div class="cc-sub code-tag-text" data-en="2 Bed · 111,87 m²" data-id="2 Kamar Tidur · 111,87 m²">2 Bed · 111,87 m²</div>
+        <div class="cc-stat"><span class="code-tag-text" data-en="Real Cost" data-id="Biaya Konstruksi">Real Cost</span><span id="cu-total">-</span></div>
+        <div class="cc-stat"><span>PPN 11%</span><span id="cu-ppn">-</span></div>
+        <div class="cc-stat big"><span class="code-tag-text" data-en="Grand Total" data-id="Total Keseluruhan">Grand Total</span><span id="cu-grand">-</span></div>
+        <div class="cc-stat"><span class="code-tag-text" data-en="Per m²" data-id="Per m²">Per m²</span><span id="cu-m2">-</span></div>
       </div>
     </div>
 
-    <div class="section-title"><span class="code-tag">DETAIL</span> Perbandingan Per Divisi Pekerjaan</div>
-    <div style="overflow-x:auto;-webkit-overflow-scrolling:touch">
+    <div class="section-title"><span class="code-tag">DETAIL</span> <span class="code-tag-text" data-en="Division Comparison" data-id="Perbandingan Per Divisi">Perbandingan Per Divisi</span></div>
     <table class="compare-full-table">
-      <thead>
-        <tr>
-          <th style="width:44px">Kode</th>
-          <th>Uraian Pekerjaan</th>
-          <th style="width:180px">EVARA SELATAN</th>
-          <th style="width:180px">EVARA UTARA</th>
-          <th style="width:120px">Selisih</th>
-        </tr>
-      </thead>
+      <thead><tr><th style="width:44px" class="code-tag-text" data-en="No." data-id="No.">No.</th><th class="code-tag-text" data-en="Description" data-id="Uraian Pekerjaan">Description</th><th style="width:160px">SELATAN</th><th style="width:160px">UTARA</th><th style="width:120px" class="code-tag-text" data-en="Diff." data-id="Selisih">Selisih</th></tr></thead>
       <tbody id="compare-table"></tbody>
     </table>
-    </div>
-
-    <div style="margin-top: 40px; padding: 20px; background: #f8f9fa; border-left: 4px solid var(--rust); font-size: 0.85rem; color: #666;">
-        <p><strong>Catatan Kepatuhan:</strong> Migrasi struktur RAB v2 ini telah mengadopsi standar template profesional <strong>PT Rusira Ekatwa Zafar</strong> untuk memastikan akurasi kategorisasi elemen bangunan.</p>
-    </div>
-
-  </div><!-- /compare -->
+  </div>
 
 </main>
 
+<script src="https://cdn.jsdelivr.net/npm/xlsx-js-style@1.2.0/dist/xlsx.bundle.js"></script>
+<script src="dict.js"></script>
+<script src="data_selatan.js"></script>
+<script src="data_utara.js"></script>
 <script src="script.js"></script>
+<script>
+  window.toggleLang('en');
+</script>
 </body>
 </html>
